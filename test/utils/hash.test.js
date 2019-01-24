@@ -44,8 +44,8 @@ describe('hashing functions', () => {
     const password = 'password';
 
     return bcrypt.hash(password, 10)
-      .then(hashedpassword => {
-        return bcrypt.compare(password, hashedpassword);
+      .then(hashedPassword => {
+        return bcrypt.compare(password, hashedPassword);
       })
       .then(result => {
         expect(result).toBeTruthy();
@@ -56,8 +56,8 @@ describe('hashing functions', () => {
     const password = 'password';
 
     return bcrypt.hash(password, 10)
-      .then(hashedpassword => {
-        return bcrypt.compare('badPassword', hashedpassword);
+      .then(hashedPassword => {
+        return bcrypt.compare('badPassword', hashedPassword);
       })
       .then(result => {
         expect(result).toBeFalsy();
