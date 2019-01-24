@@ -54,7 +54,7 @@ describe('hash tests', () => {
   it('uses compare function to check if two hashes are the same', () => {
     return hash('password')
       .then(hashedPassword => {
-        compare('password', hashedPassword)
+        return compare('password', hashedPassword)
           .then(res => {
             expect(res).toBeTruthy();
           })
