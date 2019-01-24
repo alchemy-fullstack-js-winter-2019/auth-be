@@ -1,7 +1,6 @@
 require('dotenv').config();
 require('../../lib/utils/connect')();
 const mongoose = require('mongoose');
-
 const User = require('../../lib/models/User');
 
 describe('user model', () => {
@@ -27,6 +26,32 @@ describe('user model', () => {
       .then(user => {
         expect(user.passwordHash).toEqual(expect.any(String));
         expect(user.password).toBeUndefined();
+      });
+  });
+
+  it('can compare a password', () => {
+    return User.create({
+      email: 'test@email.com',
+      password: 'password'
+    })
+      .then(user => {
+        return user.compare('password');
+      })
+      .then(results => {
+        expect(results).toBeTruthy();
+      });
+  });
+
+  it('can compare a bad password', () => {
+    return User.create({
+      email: 'test@email.com',
+      password: 'password'
+    })
+      .then(user => {
+        return user.compare('badPassword');
+      })
+      .then(results => {
+        expect(results).toBeFalsy();
       });
   });
 });
