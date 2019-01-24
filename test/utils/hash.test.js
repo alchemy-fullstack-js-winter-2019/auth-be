@@ -73,6 +73,22 @@ describe('hashing functions', () => {
   });
 
   it('can compare a password and string', () => {
-    
-  })
+    return hash('password')
+      .then(hashedPassword => {
+        return compare('password', hashedPassword);
+      })
+      .then(result => {
+        expect(result).toBeTruthy();
+      });
+  });
+
+  it('can compare a bad password and a string', () => {
+    return hash('password')
+      .then(hashedPassword => {
+        return compare('badPassword', hashedPassword);
+      })
+      .then(result => {
+        expect(result).tBeFalsy();
+      });
+  });
 });
