@@ -11,4 +11,14 @@ describe('tokens', () => {
     const body = jwt.verify(token, 'seekrat');
     expect(body).toEqual({ payload: { hi: 'there' }, iat: expect.any(Number) });
   });
+
+  it('can verify a token with expiration', () => {
+    const token = jwt.sign({ payload: { hi: 'there' } }, 'seekrat', { expiresIn: '1h' });
+    const body = jwt.verify(token, 'seekrat');
+    expect(body).toEqual({
+      payload: { hi: 'there' },
+      iat: expect.any(Number),
+      exp: expect.any(Number)
+    });
+  });
 });
