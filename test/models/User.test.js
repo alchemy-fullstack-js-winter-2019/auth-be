@@ -30,4 +30,8 @@ describe('User', () => {
     // console.log(user); // returns { _id: 5c4a3ea7056e1e0afd9baf1b, email: 'e@e.com' }
     expect(user._tempPassword).toEqual('abc123');
   });
+
+  it('', () => {
+    
+  });
 });
