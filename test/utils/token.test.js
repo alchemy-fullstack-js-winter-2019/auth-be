@@ -10,6 +10,19 @@ describe('jwt', () => {
     expect(token).toEqual(expect.any(String));
   });
 
-  
+  it('can verify a token', () => {
+    const token = jwt.sign({
+      payload: {
+        foo: 'bar'
+      }
+    }, 'backStreetBoys');
+    const body = jwt.verify(token, 'backStreetBoys');
+    // console.log(body); // returns { payload: { foo: 'bar' }, iat: 1548359241 }
+    expect(body).toEqual({
+      payload: {
+        foo: 'bar' 
+      }, iat: expect.any(Number)
+    });
+  });
 });
 
