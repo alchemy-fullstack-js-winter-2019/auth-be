@@ -31,4 +31,14 @@ describe('bcrypt', () => {
           });
       });
   });
+
+  it('can compare hashes based on the same password', () => {
+    return bcryptjs.hash('fuego', 10)
+      .then(hashedPassword => {
+        bcryptjs.compare('fuego', hashedPassword)
+          .then(result => {
+            expect(result).toBeTruthy();
+          });
+      });
+  });
 });
