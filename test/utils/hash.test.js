@@ -1,4 +1,5 @@
 const bcryptjs = require('bcryptjs');
+const { hash } = require('./hash');
 
 describe('auth-be app', () => {
   it('hashes a password', () => {
@@ -60,6 +61,16 @@ describe('auth-be app', () => {
         expect(res).toBeFalsy();
       })
     })
+  });
+
+  // create a hash function that takes a string 
+  // and returns a promise that resolves with a hashed password.
+  it('can take a string and return a hashed password', () => {
+    return hash('blahblah')
+    .then(hashedPassword => {
+      expect(hashedPassword).toBeDefined();
+      expect(hashedPassword).not.toEqual('blahblah');
+    });
   });
 
 });
