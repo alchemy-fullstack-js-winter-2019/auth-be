@@ -44,13 +44,26 @@ describe('User tests', () => {
       });
   });
 
-  it('compares hashed password with password', () => { 
+  it('compares passwords', () => { 
     const password = 'password';
-    User.create({ email: 'test@test.com', password })
+    return User.create({ email: 'test@test.com', password })
       .then(user => {
-        return user.compare(user.passwordHash);
+        return user.compare(password);
       })
-      .then();
+      .then(res => {
+        expect(res).toBeTruthy();
+      });
+  });
+
+  it('can compare bad passwords', () => {
+    const password = 'password';
+    return User.create({ email: 'test@test.com', password })
+      .then(user => {
+        return user.compare('badpassword');
+      })
+      .then(res => {
+        expect(res).toBeFalsy();
+      });
   });
 
 });
