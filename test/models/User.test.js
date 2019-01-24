@@ -6,6 +6,12 @@ const User = require('../../lib/models/User');
 const { Types } = require('mongoose');
 const mongoose = require('mongoose');
 
+beforeEach(done => {
+  return mongoose.connection.dropDatabase(() => {
+    done();
+  });
+});
+
 describe('User model', () => {
   it('validates a good model', () =>  {
     const user = new User({ email: 'test@test.com' });
