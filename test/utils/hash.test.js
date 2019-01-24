@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const { hash } = require('../../lib/utils/hash');
+const { hash, compare } = require('../../lib/utils/hash');
 
 describe('hash tests', () => {
   it('hashes a password', () => {
@@ -51,5 +51,14 @@ describe('hash tests', () => {
         expect(hashedPassword).toBeDefined();
       });
   });
+  it('uses compare function to check if two hashes are the same', () => {
+    return hash('password')
+      .then(hashedPassword => {
+        compare('password', hashedPassword)
+          .then(res => {
+            expect(res).toBeTruthy();
+          })
+      })
+  })
 })
 
