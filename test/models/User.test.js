@@ -1,7 +1,20 @@
+require('dotenv').config();
+require('../../lib/utils/connect')();
+const mongoose = require('mongoose');
 const { Types } = require('mongoose');
 const User = require('../../lib/models/User');
 
 describe('User', () => {
+  beforeEach(done => {
+    return mongoose.connection.dropDatabase(() => {
+      done();
+    });
+  });
+  afterAll(done => {
+    mongoose.connection.close();
+    done();
+  });
+
   it('validates a good model', () => {
     const user = new User({ email: 'test@test.com' });
     expect(user.toJSON()).toEqual({
@@ -31,7 +44,25 @@ describe('User', () => {
     expect(user._tempPassword).toEqual('abc123');
   });
 
-  it('', () => {
-    
+  it('has a passwordHash', () => {
+    const user = new User({
+      email: 'b@b.com',
+      password: 'booboo'
+    });
+    user.save()
+      .then(user => {
+        expect(user.passwordHash).toEqual(expect.any(String));
+        expect(user.passwordHash).toBeDefined();
+      });
+    // v similar as above
+
+    // return User.create({
+    //   email: 'b@b.com',
+    //   password: 'booboo'
+    // })
+    //   .then(user => {
+    //     expect(user.passwordHash).toEqual(expect.any(String));
+    //     expect(user.passwordHash).toBeDefined();
+    //   });
   });
 });
