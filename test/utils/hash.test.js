@@ -39,4 +39,16 @@ describe('auth-be app', () => {
     });
   });
 
+  it('can compare hashes based on the same password', () => {
+    const password = 'password';
+    return bcryptjs.hash(password, 10)
+    .then(hash => {
+      bcryptjs.compare(password, hash)
+      .then(res => {
+        console.log(res); // returns 'true'
+        expect(res).toBeTruthy();
+      })
+    })
+  });
+
 });
