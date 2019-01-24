@@ -70,7 +70,7 @@ describe('hashing functions', () => {
       .then(hashedPassword => {
         return compare('badPassword',hashedPassword)
       })
-      .ten(result => {
+      .then(result => {
         expect(result).toBeFalsy();
       });
   });
