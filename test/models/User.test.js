@@ -11,4 +11,8 @@ describe('user model', () => {
     const errors = user.validateSync().errors;
     expect(errors.email.message).toEqual('Email required');
   });
+  it('stores a _tempPassword', () => {
+    const user = new User({ email: 'test@test.com', password: 'PWORD' });
+    expect(user._tempPassword).toEqual('PWORD');
+  });
 });
