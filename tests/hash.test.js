@@ -39,12 +39,12 @@ describe('hashing functions', () => {
 
   it('can compare hashes based on the same password', () => {
     const password = 'password';
-    return bcrypyt.hash('password', 10)
+    return bcrypyt.hash(password, 10)
       .then(hashedPassword => {
         return bcrypyt.compare(password, hashedPassword);
       })
       .then(result => {
-        expect(result).toBeFalsey();
+        expect(result).toBeTruthy();
       });
   });
 
