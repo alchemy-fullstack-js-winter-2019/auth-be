@@ -1,5 +1,5 @@
 const bcryptjs = require('bcryptjs');
-const { hash, compare } = require('./hash');
+const { hash, compare } = require('../../lib/utils/hash');
 
 describe('auth-be app', () => {
   it('hashes a password', () => {
