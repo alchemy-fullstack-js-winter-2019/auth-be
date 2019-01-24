@@ -45,6 +45,16 @@ describe('bcrypt', () => {
           });
       });
   });
+
+  it('can compare hashes based on a different password', () => {
+    return bcryptjs.hash('fuego', 10)
+      .then(hashedPassword => {
+        bcryptjs.compare('wrongfuego', hashedPassword)
+          .then(result => {
+            expect(result).toBeFalsy();
+          });
+      });
+  });
 });
 
 describe('hash function', () => {
