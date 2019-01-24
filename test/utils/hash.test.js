@@ -51,7 +51,7 @@ describe('hash tests', () => {
         expect(hashedPassword).toBeDefined();
       });
   });
-  it('uses compare function to check if two hashes are the same', () => {
+  it('uses compare function to check if two same hashes are the same', () => {
     return hash('password')
       .then(hashedPassword => {
         return compare('password', hashedPassword)
@@ -59,6 +59,15 @@ describe('hash tests', () => {
             expect(res).toBeTruthy();
           })
       })
-  })
+  });
+  it('uses compare function to check if two different hashes are NOT the same', () => {
+    return hash('password')
+      .then(hashedPassword => {
+        return compare('WRONGpassword', hashedPassword)
+          .then(res => {
+            expect(res).toBeFalsy();
+          })
+      })
+  });
 })
 
