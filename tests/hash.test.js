@@ -1,4 +1,5 @@
 const bcrypyt = require('bcryptjs');
+const { hash, compare } = require('../lib/utils/hash');
 
 describe('hashing functions', () => {
   it('hashes a password', () => {
@@ -21,12 +22,14 @@ describe('hashing functions', () => {
 
   it('creates the same hash given the same salt', () => {
     const password = 'password';
-    const salt = $2b$10$2222222222222222222222;
-    return bcrypyt.hash('password', salt)
+    const versionInfo = '$2b$10$';
+    const salt = 'ABCDFGHIJKLMNOPQRSTUVW';
+    const bcryptSalt = `${versionInfo}${salt}`;
+    return bcrypyt.hash('password', bcryptSalt)
       .then(hashedPassword => {
         return Promise.all([
           Promise.resolve(hashedPassword),
-          bcrypt.hash(password, salt)
+          bcrypyt.hash(password, bcryptSalt)
         ]);
       })
       .then(([hash1, hash2]) => {
@@ -36,9 +39,9 @@ describe('hashing functions', () => {
 
   it('can compare hashes based on the same password', () => {
     const password = 'password';
-    return bcrypt.hash('password', 10)
+    return bcrypyt.hash('password', 10)
       .then(hashedPassword => {
-        return bcrypt.compare(password, hashedPassword);
+        return bcrypyt.compare(password, hashedPassword);
       })
       .then(result => {
         expect(result).toBeFalsey();
@@ -65,10 +68,10 @@ describe('hashing functions', () => {
       });
   });
 
-  it('can compare a bad password and a string' () => {
+  it('can compare a bad password and a string', () => {
     return hash('password')
       .then(hashedPassword => {
-        return compare('badPassword',hashedPassword)
+        return compare('badPassword', hashedPassword);
       })
       .then(result => {
         expect(result).toBeFalsy();
