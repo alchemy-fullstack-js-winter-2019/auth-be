@@ -1,5 +1,5 @@
 const bcryptjs = require('bcryptjs');
-const { hash } = require('./hash');
+const { hash, compare } = require('./hash');
 
 describe('auth-be app', () => {
   it('hashes a password', () => {
@@ -71,6 +71,28 @@ describe('auth-be app', () => {
       expect(hashedPassword).toBeDefined();
       expect(hashedPassword).not.toEqual('blahblah');
     });
+  });
+
+  // create a compare function that takes a password string 
+  // and hash and returns a promise that resolves to true
+  // * if the password matches the hash, otherwise false
+  it('can take a password + hash, compare, and return true if match', () => {
+    return hash('blahblah')
+    .then(hashed => {
+      return compare('blahblah', hashed)
+      .then(res => {
+        expect(res).toBeTruthy();
+      })
+    })
+  });
+  it('can take a password + hash, compare, and return false if not match', () => {
+    return hash('blahblah')
+    .then(hashed => {
+      return compare('boo', hashed)
+      .then(res => {
+        expect(res).toBeFalsy();
+      })
+    })
   });
 
 });

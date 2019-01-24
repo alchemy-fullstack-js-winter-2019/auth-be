@@ -6,6 +6,11 @@ const hash = str => {
   return bcryptjs.hash(str, SALT_ROUNDS);
 };
 
+const compare = (str, hash) => {
+  return bcryptjs.compare(str, hash);
+};
+
 module.exports = {
-  hash
+  hash,
+  compare
 };
