@@ -20,7 +20,15 @@ describe('bcrypt', () => {
       });
   });
 
-  // it('creates the same hash given the same salt', () => {
-  //   const salt = $2b$10$fkdlskei3lsjvbcneosntl
-  // })
+  it('creates the same hash given the same salt', () => {
+    const salt = '$2b$10$fkdlskei3lsjvbcneosntl';
+    const password = 'roxy';
+    return bcryptjs.hash(password, salt)
+      .then(hashedPassword1 => {
+        return bcryptjs.hash(password, salt) 
+          .then(hashedPassword2 => {
+            expect(hashedPassword1).toEqual(hashedPassword2);
+          });
+      });
+  });
 });
