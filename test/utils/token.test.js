@@ -25,16 +25,16 @@ describe('json web tokens', () => {
       exp: expect.any(Number) });
   });
 
-  it('can use a tokenize function', () => {
+  it('create new token with tokenize function', () => {
     const payload = { payload: { hi: 'there' } };
     const token = tokenize(payload);
     expect(token).toEqual(expect.any(String));
   });
   
-  it('can use untokenize to return a payload from a given token', () => {
+  it('return a payload from a given token using untokenize function', () => {
     const payload = { payload: { hi: 'there' } };
     const token = tokenize(payload);
     const tokenNoMore = untokenize(token);
-    expect(tokenNoMore).toEqual({ hi: 'there' });
+    expect(tokenNoMore).toEqual({ payload: { hi: 'there' } });
   });
 });
