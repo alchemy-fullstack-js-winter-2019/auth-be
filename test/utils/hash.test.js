@@ -1,4 +1,5 @@
 const bcryptjs = require('bcryptjs');
+const hashFunction = require('../../lib/utils/hash');
 
 describe('bcrypt', () => {
   it('hashes a password', () => {
@@ -21,11 +22,13 @@ describe('bcrypt', () => {
   });
 
   it('creates the same hash given the same salt', () => {
-    const salt = '$2b$10$fkdlskei3lsjvbcneosntl';
+    const version = '$2b$10$';
+    const salt = 'fkdlskei3lsjvbcneosntl';
+    const bcryptSalt = `${version}${salt}`;
     const password = 'roxy';
-    return bcryptjs.hash(password, salt)
+    return bcryptjs.hash(password, bcryptSalt)
       .then(hashedPassword1 => {
-        return bcryptjs.hash(password, salt) 
+        return bcryptjs.hash(password, bcryptSalt) 
           .then(hashedPassword2 => {
             expect(hashedPassword1).toEqual(hashedPassword2);
           });
@@ -40,5 +43,12 @@ describe('bcrypt', () => {
             expect(result).toBeTruthy();
           });
       });
+  });
+});
+
+describe('hash function', () => {
+  it('can return a hashed version of a string password passed in', () => {
+    const string = 'colonelmustard';
+    expect(hashFunction(string)).toEqual(bcryptjs.hash(string, 10));
   });
 });
