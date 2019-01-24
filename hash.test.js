@@ -33,4 +33,15 @@ describe('hashing functions', () => {
         expect(hash1).toEqual(hash2);
       });
   });
+
+  it('can compare hashes based on the same password', () => {
+    const password = 'password';
+    return bcrypt.hash('password', 10)
+      .then(hashedPassword => {
+        return bcrypt.compare(password, hashedPassword);
+      })
+      .then(result => {
+        expect(result).toBeFalsey();
+      });
+  });
 });
