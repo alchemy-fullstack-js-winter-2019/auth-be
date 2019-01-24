@@ -32,9 +32,8 @@ describe('json web tokens', () => {
   });
   
   it('return a payload from a given token using untokenize function', () => {
-    const payload = { payload: { hi: 'there' } };
-    const token = tokenize(payload);
-    const tokenNoMore = untokenize(token);
-    expect(tokenNoMore).toEqual({ payload: { hi: 'there' } });
+    const token = tokenize({ hi: 'there' });
+    const payload = untokenize(token);
+    expect(payload).toEqual({ hi: 'there' });
   });
 });
