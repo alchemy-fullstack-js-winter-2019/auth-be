@@ -14,6 +14,11 @@ describe('user model', () => {
     expect(errors.email.message).toEqual('Path `email` is required.');
     console.log(errors);
   });
+
+  it('stores a _tempPassword', () => {
+    const user = new User({ email: 'test@test.com', password: 'password' });
+    expect(user._tempPassword).toEqual(user.password);
+  });
 });
 
 
