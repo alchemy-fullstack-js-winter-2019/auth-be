@@ -17,7 +17,11 @@ describe('user model', () => {
 
   it('stores a _tempPassword', () => {
     const user = new User({ email: 'test@test.com', password: 'password' });
-    expect(user._tempPassword).toEqual(user.password);
+    expect(user._tempPassword).toEqual('password');
+  });
+
+  it('finds a user by token', () => {
+
   });
 });
 
