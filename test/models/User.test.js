@@ -1,5 +1,10 @@
+require('dotenv').config();
+require('../../lib/utils/connect')();
+
+
 const User = require('../../lib/models/User');
 const { Types } = require('mongoose');
+const mongoose = require('mongoose');
 
 describe('User model', () => {
   it('validates a good model', () =>  {
@@ -18,5 +23,27 @@ describe('User model', () => {
     const user = new User({ email: 'carmen@email.com', password: 'password' });
     expect(user._tempPassword).toEqual('password');
   });
-})
-;
+
+  it('password hash is set after user.save()', () => {
+    // const user = new User({ email: 'carmen@email.com', password: 'password' });
+    // user.save();
+
+    return User.create({ 
+      email: 'carmen@email.com', 
+      password: 'password' 
+    })
+      .then(user => {
+        user.save()
+          .then(user => {
+            expect(user.passwordHash).toEqual(expect.any(String));
+            expect(user.password).toBeUndefined();
+          });
+        
+      });      
+  });  
+
+});
+
+
+
+
