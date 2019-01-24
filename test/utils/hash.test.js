@@ -25,7 +25,16 @@ describe('hash tests', () => {
             expect(hashed1).toEqual(hashed2)
           })
       })
-  })
-
+  });
+  it('it can compare hashes based on the same password', () => {
+    bcrypt.hash('password', 10)
+      .then(hashed => {
+        bcrypt.compare('password', hashed)
+        .then(result => {
+          expect(result).toBeTruthy();
+        })
+      })
+  });
+  
 })
 
