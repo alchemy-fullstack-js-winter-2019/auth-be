@@ -24,5 +24,24 @@ describe('jwt', () => {
       }, iat: expect.any(Number)
     });
   });
+
+  it('can verify a token with expiration', () => {
+    const token = jwt.sign({
+      payload: {
+        bam: 'BAM'
+      }
+    }, 'nSync', {
+      expiresIn: '1h' 
+    });
+    const body = jwt.verify(token, 'nSync');
+    expect(body).toEqual({
+      payload: {
+        bam: 'BAM'
+      }, iat: expect.any(Number), exp: expect.any(Number)
+    });
+  });
+
+
+
 });
 
