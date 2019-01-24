@@ -53,4 +53,15 @@ describe('hashing functions', () => {
         expect(hashedPassword).not.toEqual('password');
       });
   });
+
+  it('can compare a password and a string', () => {
+    const password = 'password';
+    return hash(password)
+      .then(hashedPassword => {
+        return compare(password, hashedPassword)
+      })
+      .then(result => {
+        expect(result).toBeTruthy();
+      });
+  });
 });
