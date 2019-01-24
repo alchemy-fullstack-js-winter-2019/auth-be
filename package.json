@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "jest",
+    "test:watch": "jest --watchAll --runInBand",
+    "start": "node index.js",
+    "start:watch": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +28,10 @@
     "supertest": "^3.4.2"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^6.2.0",
+    "env": "0.0.2",
+    "jsonwebtoken": "^8.4.0",
     "morgan": "^1.9.1",
     "nodemon": "^1.18.9"
   }
