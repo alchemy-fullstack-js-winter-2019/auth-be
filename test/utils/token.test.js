@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { tokenize } = require('../../lib/utils/token');
+const { tokenize, untokenize } = require('../../lib/utils/token');
 require('dotenv').config();
 
 describe('jwt functions', () => {
@@ -20,6 +20,11 @@ describe('jwt functions', () => {
   it('can use tokenize function to return a token', () => {
     const token = tokenize({ hi: 'there' });
     expect(token).toEqual(expect.any(String));
+  });
+  it('uses untokenize to function to get a payload',() => {
+    const token = tokenize({ hi: 'there' });
+    const payload = untokenize(token);
+    expect(payload).toEqual({ hi: 'there' });
   });
 });
 
