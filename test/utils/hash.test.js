@@ -88,7 +88,7 @@ describe('hashing functions', () => {
         return compare('badPassword', hashedPassword);
       })
       .then(result => {
-        expect(result).tBeFalsy();
+        expect(result).toBeFalsy();
       });
   });
 });

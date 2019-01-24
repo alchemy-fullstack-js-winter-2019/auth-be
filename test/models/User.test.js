@@ -6,7 +6,7 @@ const User = require('../../lib/models/User');
 
 describe('User model', () => {
 
-  beforeEach(() => {
+  beforeEach(done => {
     mongoose.connection.dropDatabase(done);
   });
 
@@ -40,6 +40,32 @@ describe('User model', () => {
       .then(user => {
         expect(user.passwordHash).toEqual(expect.any(String));
         expect(user.password).toBeUndefined();
+      });
+  });
+
+  it('can compare good passwords', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'PassWord'
+    })
+      .then(user => {
+        user.compare('PassWord');
+      })
+      .then(result => {
+        expect(result).toBeTruthy();
+      });
+  });
+
+  it('can compare bad passwords', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'PassWord'
+    })
+      .then(user => {
+        user.compare('badPassWord');
+      })
+      .then(result => {
+        expect(result).toBeFalsy();
       });
   });
 });
