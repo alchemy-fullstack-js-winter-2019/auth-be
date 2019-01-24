@@ -1,0 +1,28 @@
+{
+  "name": "auth-be",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deetolman/auth-be.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deetolman/auth-be/issues"
+  },
+  "homepage": "https://github.com/deetolman/auth-be#readme",
+  "devDependencies": {
+    "eslint": "^5.12.1",
+    "jest": "^23.6.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3"
+  }
+}
