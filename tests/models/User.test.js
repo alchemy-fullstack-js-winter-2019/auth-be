@@ -10,7 +10,8 @@ describe('user model', () => {
 
   it('has a required email', () => {
     const user = new User({});
-    const errors = user.validateSync().errors
+    const errors = user.validateSync().errors;
+    console.log(errors);
   });
 });
 
