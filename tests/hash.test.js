@@ -58,10 +58,20 @@ describe('hashing functions', () => {
     const password = 'password';
     return hash(password)
       .then(hashedPassword => {
-        return compare(password, hashedPassword)
+        return compare(password, hashedPassword);
       })
       .then(result => {
         expect(result).toBeTruthy();
+      });
+  });
+
+  it('can compare a bad password and a string' () => {
+    return hash('password')
+      .then(hashedPassword => {
+        return compare('badPassword',hashedPassword)
+      })
+      .ten(result => {
+        expect(result).toBeFalsy();
       });
   });
 });
