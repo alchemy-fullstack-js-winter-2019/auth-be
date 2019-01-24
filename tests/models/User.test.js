@@ -49,8 +49,30 @@ describe('user model', () => {
     
   });
 
-  it('can create a static findByToken method', () => {
+  it('can compare passwords', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(user => {
+        return user.compare('password');
+      })
+      .then(result => {
+        expect(result).toBeTruthy();
+      });
+  });
 
+  it('can compare bad passwords', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(user => {
+        return user.compare('badPassword');
+      })
+      .then(result => {
+        expect(result).toBeFalsy();
+      });
   });
 
 });
