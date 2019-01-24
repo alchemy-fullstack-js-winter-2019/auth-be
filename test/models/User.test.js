@@ -6,4 +6,9 @@ describe('user model', () => {
     const user = new User({ email: 'test@test.com' });
     expect(user.toJSON()).toEqual({ email: 'test@test.com', _id: expect.any(mongoose.Types.ObjectId) });
   });
+  it('has a required email', () => {
+    const user = new User({});
+    const errors = user.validateSync().errors;
+    expect(errors.email.message).toEqual('Email required');
+  });
 });
