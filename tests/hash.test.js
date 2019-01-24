@@ -44,4 +44,13 @@ describe('hashing functions', () => {
         expect(result).toBeFalsey();
       });
   });
+
+  it('can hash a password', () => {
+    const password = 'password';
+    return hash(password, 10)
+      .then(hashedPassword => {
+        expect(hashedPassword).toBeDefined();
+        expect(hashedPassword).not.toEqual('password');
+      });
+  });
 });
