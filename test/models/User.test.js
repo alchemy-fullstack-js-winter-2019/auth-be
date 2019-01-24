@@ -54,8 +54,7 @@ describe('User', () => {
         expect(user.passwordHash).toEqual(expect.any(String));
         expect(user.passwordHash).toBeDefined();
       });
-    // v similar as above
-
+    // v static method, similar as above (instance method)
     // return User.create({
     //   email: 'b@b.com',
     //   password: 'booboo'
@@ -64,5 +63,31 @@ describe('User', () => {
     //     expect(user.passwordHash).toEqual(expect.any(String));
     //     expect(user.passwordHash).toBeDefined();
     //   });
+  });
+
+  it('can compare passwords', () => {
+    return User.create({
+      email: 't@t.com',
+      password: 'booboo'
+    })
+      .then(user => {
+        return user.compare('booboo');
+      })
+      .then(res => {
+        expect(res).toBeTruthy();
+      });
+  });
+
+  it('can compare bad passwords', () => {
+    return User.create({
+      email: 't@t.com',
+      password: 'booboo'
+    })
+      .then(user => {
+        return user.compare('coo');
+      })
+      .then(res => {
+        expect(res).toBeFalsy();
+      });
   });
 });
