@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const { hash } = require('../../lib/utils/hash');
 
 describe('hash tests', () => {
   it('hashes a password', () => {
@@ -43,6 +44,12 @@ describe('hash tests', () => {
           expect(result).toBeFalsy();
         })
       })
+  });
+  it('uses hash function that returns a hashed password', () => {
+    return hash('password')
+      .then(hashedPassword => {
+        expect(hashedPassword).toBeDefined();
+      });
   });
 })
 
