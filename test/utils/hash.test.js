@@ -15,6 +15,17 @@ describe('hash tests', () => {
         expect(hashedPass1).not.toEqual(hashedPass2);
       })
     })
+  });
+  it('it creates the same hash given the same salt',() => {
+    const salt = '$2b$10$1234567891234567891234';
+    bcrypt.hash('password', salt)
+      .then(hashed1 => {
+        bcrypt.hash('password', salt)
+          .then(hashed2 => {
+            expect(hashed1).toEqual(hashed2)
+          })
+      })
   })
+
 })
 
