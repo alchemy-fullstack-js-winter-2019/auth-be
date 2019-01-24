@@ -24,10 +24,11 @@ describe('jwt functions', () => {
       payload: { hi: 'there' },
       iat: expect.any(Number),
       exp: expect.any(Number)
-  });
+    });
+  });   
 
   it('can tokenize a payload', () => {
-    const token = tokenize({ hi: 'there'});
+    const token = tokenize({ hi: 'there' });
     expect(token).toEqual(expect.any(String));
   });
 
