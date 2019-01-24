@@ -21,7 +21,7 @@ describe('jwt functions', () => {
     const token = tokenize({ hi: 'there' });
     expect(token).toEqual(expect.any(String));
   });
-  it('uses untokenize to function to get a payload',() => {
+  it('uses untokenize to function to get a payload', () => {
     const token = tokenize({ hi: 'there' });
     const payload = untokenize(token);
     expect(payload).toEqual({ hi: 'there' });
