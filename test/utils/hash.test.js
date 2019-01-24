@@ -20,16 +20,27 @@ describe('bcrypt', () => {
       });
   });
   it('creates the same hash given the same salt', () => {
-    const salt = '$2b$10$12jne9skdn3jdkskwopa98';
-    return bcrypt.hash('password', salt)
+    const versionInfo = '$2b$10$';
+    const salt = '12jne9skdn3jdkskwopa98';
+    const bcryptSalt = `${versionInfo}${salt}`;
+    return bcrypt.hash('password', bcryptSalt)
       .then(password1 => {
         return Promise.all([
           Promise.resolve(password1),
-          bcrypt.hash('password', salt)
+          bcrypt.hash('password', bcryptSalt)
         ]);
       })
       .then(([hash1, hash2]) => {
         expect(hash1).toEqual(hash2);
+      });
+  });
+  it('can compare hashes', () => {
+    return bcrypt.hash('password', 10)
+      .then(hashedPassword => {
+        bcrypt.compare('password', hashedPassword)
+          .then(res => {
+            expect(res).toBeTruthy();
+          });
       });
   });
 });
