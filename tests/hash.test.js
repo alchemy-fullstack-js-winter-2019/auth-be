@@ -15,7 +15,7 @@ describe('hashing functions', () => {
       .then(hashedPassword1 => {
         return bcrypyt.hash(password, 10)
           .then(hashedPassword2 => {
-            expect(hashedPassword1).toEqual(hashedPassword2);
+            expect(hashedPassword1).not.toEqual(hashedPassword2);
           });
       });
   });
