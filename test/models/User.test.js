@@ -14,7 +14,7 @@ describe('User', () => {
     const user = new User({});
     const errors = user.validateSync().errors;
     expect(errors).toBeDefined();
-    expect(errors.email['message']).toEqual('Path `email` is required.');
+    expect(errors.email['message']).toEqual('Email is required.');
   });
 
   it('can require an email to match a pattern', () => {
@@ -23,5 +23,11 @@ describe('User', () => {
     expect(errors.email['message']).toEqual(
       '\'test\' is not a valid email!'
     );
+  });
+
+  it('stores a _tempPassword', () => {
+    const user = new User({ email: 'e@e.com', password: 'abc123' });
+    // console.log(user); // returns { _id: 5c4a3ea7056e1e0afd9baf1b, email: 'e@e.com' }
+    expect(user._tempPassword).toEqual('abc123');
   });
 });
