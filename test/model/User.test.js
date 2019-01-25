@@ -101,8 +101,8 @@ describe('User Model', () => {
       email: 'test@test.com',
       password: 'password'
     }).then(user => user.authToken())
-      .then(returned => {
-        expect(returned).toEqual(expect.any(String));
+      .then(token => {
+        expect(token).toEqual(expect.any(String));
       });
   });
 
