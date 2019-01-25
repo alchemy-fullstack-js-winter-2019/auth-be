@@ -30,15 +30,14 @@ describe('User model', () => {
     expect(errors.email.message).toEqual('Email required');
   });
 
-  it('stores a _tempPassword', () => {
-    const user = new User({
-      email: 'test@test.com',
-      password: 'p455w0rd'
-    });
-    expect(user._tempPassword).toEqual('p455w0rd');
+  it.only('stores a _tempPassword', () => {
+    return testUser('test@email.com', 'pass')
+      .then(user => {
+        expect(user._tempPassword).toEqual('pass');
+      });
   });
 
-  it.only('has a passwordHash', () => {
+  it('has a passwordHash', () => {
     return testUser('test@email.com', 'pass')
       .then(user => {
         expect(user.passwordHash).toEqual(expect.any(String));
