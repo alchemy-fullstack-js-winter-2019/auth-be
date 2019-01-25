@@ -97,18 +97,28 @@ describe('User', () => {
       email: 'test@test.com',
       password: 'password'
     })
-      .then(user => {
-        // create a token out of the user
-        const token = tokenize(user);
-        // get the user from the token
-        return User.findByToken(token);
-      })
+      .then(user => tokenize(user))
+      .then(token => User.findByToken(token))
       .then(foundUser => {
         expect(foundUser).toEqual({
-          __v: 0,
+          // __v: 0,
           _id: expect.any(String),
           email: 'test@test.com',
-          passwordHash: expect.any(String)
+          // passwordHash: expect.any(String)
+        });
+      });
+  });
+
+  it('can remove __v and passwordHash from user', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(user => user.toJSON())
+      .then(userToJson => {
+        expect(userToJson).toEqual({
+          _id: expect.any(Types.ObjectId),
+          email: 'test@test.com'
         });
       });
   });
