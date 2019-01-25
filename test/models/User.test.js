@@ -88,12 +88,9 @@ describe('User model', () => {
       .then(userFromToken => {
         expect(userFromToken).toEqual({
           email: 'carmen@email.com', 
-          passwordHash: expect.any(String),
           _id: expect.any(String),
-          __v: 0
         });
       });
-        
   });
 });
 
