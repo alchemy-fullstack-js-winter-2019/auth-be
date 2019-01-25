@@ -74,4 +74,14 @@ describe('user test', () => {
 
             });
     });
+    it('it can create an auth token', () => {
+        return User.create({
+            email: 'email@email.com', 
+            password: 'password' 
+        })
+            .then(user => user.authToken())
+            .then(token => {
+                expect(token).toEqual(expect.any(String));
+            });
+    });
 });
