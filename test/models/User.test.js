@@ -38,27 +38,15 @@ describe('User model', () => {
     expect(user._tempPassword).toEqual('p455w0rd');
   });
 
-  it('has a passwordHash', () => {
-    // const user = new User({
-    //   email: 'test@test.com',
-    //   password: 'p455w0rd'
-    // });
-    // user.save();
-
-    return User.create({
-      email: 'test@test.com',
-      password: 'p455w0rd'
-    })
+  it.only('has a passwordHash', () => {
+    return testUser('test@email.com', 'pass')
       .then(user => {
         expect(user.passwordHash).toEqual(expect.any(String));
         expect(user.password).toBeUndefined();
       });
   });
-  it.only('can compare passwords', () => {
-    return User.create({
-      email: 'test@email.com',
-      password: 'pass'
-    })
+  it('can compare passwords', () => {
+    return testUser('test@email.com', 'pass')
       .then(user => {
         return user.compare('pass');
       })
@@ -78,8 +66,16 @@ describe('User model', () => {
         });
       });
   });
-  it.only('can create an auth token', ()=> {
+  it('can create an auth token', ()=> {
     return testUser('test@email.com', 'pass')
+      .then(user => user.authToken())
+      .then(untokenize)
+      .then(user => {
+        expect(user).toEqual({
+          email: 'test@email.com',
+          _id: expect.any(String)
+        });
+      });
 
   });
 });
