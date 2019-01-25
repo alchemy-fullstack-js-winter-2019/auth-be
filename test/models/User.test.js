@@ -92,4 +92,17 @@ describe('user model', () => {
         expect(foundUser.email).toEqual('test@test.com');
       });
   });
+
+  it('can transform the json to remove the v and password hash', () => {
+    return User.create({ email: 'test@test.com', password: 'password' })
+      .then(user => {
+        return tokenize(user);
+      })
+      .then(token => {
+        return User.findByToken(token);
+      })
+      .then(foundUser => {
+        expect(foundUser).toEqual({ email: 'test@test.com', _id: expect.any(String) });
+      });
+  });
 });
