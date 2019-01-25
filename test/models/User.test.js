@@ -39,4 +39,13 @@ describe('User model', () => {
         expect(user.password).toBeUndefined();
       });
   });
+
+  it('can compare good passwords', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'passit'
+    })
+      .then(user => user.compare('passit'))
+      .then(res => expect(res).toBeTruthy());
+  });
 });
