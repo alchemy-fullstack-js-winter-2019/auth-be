@@ -92,8 +92,21 @@ describe('user model', () => {
       });
         
   });
-      
+
+  it('can create an auth token', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(user => user.authToken())
+      .then(token => {
+        expect(token).toEqual(expect.any(String));
+      });
+        
+  });
 });
+      
+
 
 
 
