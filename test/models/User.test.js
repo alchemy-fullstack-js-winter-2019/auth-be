@@ -94,11 +94,7 @@ describe('user model', () => {
   it('can transform the json to remove the v and password hash', () => {
     return User.create({ email: 'test@test.com', password: 'password' })
       .then(user => {
-        const token = tokenize(user);
-        return User.findByToken(token);
-      })
-      .then(foundUser => {
-        expect(foundUser).toEqual({ email: 'test@test.com', _id: expect.any(String) });
+        expect(user.toJSON()).toEqual({ email: 'test@test.com', _id: expect.any(Object) });
       });
   });
 
@@ -107,8 +103,8 @@ describe('user model', () => {
       .then(user => {
         return user.authToken();
       })
-      .then(result => {
-        expect(result).toEqual(expect.any(String));
+      .then(token => {
+        expect(token).toEqual(expect.any(String));
       });
   });
 });
