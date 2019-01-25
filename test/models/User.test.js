@@ -3,7 +3,7 @@ require('../../lib/utils/connect')();
 const mongoose = require('mongoose');
 const { Types } = require('mongoose');
 const User = require('../../lib/models/User');
-const { tokenize } = require('');
+const { tokenize } = require('../../lib/utils/token');
 
 describe('User model', () => {
 
@@ -11,7 +11,7 @@ describe('User model', () => {
     mongoose.connection.dropDatabase(done);
   });
 
-  it('validates a good model', () => {
+  it.only('validates a good model', () => {
     const user = new user({ email: 'test@test.com' });
     expect(user.JSON).toEqual({ email: 'test@test.com', _id: expect.any(Object) });
   });
@@ -28,12 +28,6 @@ describe('User model', () => {
   });
 
   it('has a passwordHash', () => {
-    // const user = new User({
-    //   email: 'test@test.com',
-    //   password: 'PassWord'
-    // });
-    // user.save();
-
     return User.create({
       email: 'test@test.com',
       password: 'PassWord'
@@ -75,15 +69,22 @@ describe('User model', () => {
       email: 'test@test.com',
       password: 'PassWord'
     })
-      .then(user => token = tokenize(user))
+      .then(user => tokenize(user))
       .then(token => User.findByToken(token))
       .then(userFromToken => {
         expect(userFromToken).toEqual({
           email: 'test@test.com',
-          password: expect.any(String),
           _id: expect.any(String),
-          __v: 0
         });
       });
+  });
+
+  it('can create an auth token', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+    
+    })
   });
 });
