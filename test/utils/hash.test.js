@@ -1,11 +1,16 @@
 const bcryptjs = require('bcryptjs');
 const { hash, compare } = require('../../lib/utils/hash');
+const mongoose = require('mongoose');
+
 describe('testing hashing', () => {
     it('hashes a password', () => {
         return bcryptjs.hash('password', 10)
             .then(hashedPassword => {
                 expect(hashedPassword).toBeDefined();
             });
+    });
+    afterAll((done) => {
+        mongoose.connection.close(done);
     });
     it('encrypts the same password again', () => {
         return bcryptjs.hash('password', 10)
