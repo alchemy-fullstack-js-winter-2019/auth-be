@@ -90,6 +90,21 @@ describe('User tests', () => {
       });
   });
 
-  
+  it('does not return __v or passwordHash with user', () => {
+    return User.create({
+      email: 'test@test.com', 
+      password: 'passwordTest'
+    })
+      .then(user => {
+        return tokenize(user);
+      })
+      .then(userToken => {
+        return User.findByToken(userToken);
+      })
+      .then(userFromToken => {
+        expect(userFromToken.passwordHash).toBeUndefined();
+        expect(userFromToken.__v).toBeUndefined();
+      });
+  });
 
 });
