@@ -28,4 +28,15 @@ describe('User model', () => {
     });
     expect(user._tempPassword).toEqual('passtotheword');
   });
+
+  it('has a passwordHash', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'passit'
+    })
+      .then(user =>  {
+        expect(user.passwordHash).toEqual(expect.any(String));
+        expect(user.password).toBeUndefined();
+      });
+  });
 });
