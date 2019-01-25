@@ -1,12 +1,13 @@
 const bcrypt = require('bcryptjs');
+const { hash, compare } = require('../../lib/utils/hash');
 
 describe('hashing functions', () => {
   it('hashes a password', () => {
     return bcrypt.hash('password', 10)
     .then(hashedPassword => {
       expect(hashedPassword).toBeDefined();
-    })
     });
+  });
     it('creates a hashed password that is different', () => {
       const password = 'password';
       return bcrypt.hash(password, 10)
@@ -37,4 +38,47 @@ describe('hashing functions', () => {
       expect(hash1).toEqual(hash2);
     });
     });
+    it('can compare hashes based on the same password', () => {
+      const password = 'password';
+      return bcrypt.hash('password', 10)
+      .then(hashedPassword => {
+        return bcrypt.compare(password, hashedPassword);
+      })
+      .then(result => {
+        expect(result).toBeTruthy();
+      });
+    });
+    it('can compare hashes based on different password', () => {
+      const password = 'password';
+      return bcrypt.hash('password', 10)
+      .then(hashedPassword => {
+        return bcrypt.compare('badPassword', hashedPassword);
+      })
+      .then(result => {
+        expect(result).toBeFalsy();
+    })
+  })
+  it('can hash a password', () => {
+    return hash('password')
+    .then(hashedPassword => {
+      expect(hashedPassword).toBeDefined();
+    })
   });
+    it('can compare a password and string', () => {
+      return hash('password')
+      .then(hashedPassword => {
+        return compare('password', hashedPassword);
+      })
+      .then(result => {
+        expect(result).toBeTruthy();
+      });
+  });
+  it('can compare a bad password and string', () => {
+    return hash('password')
+    .then(hashedPassword => {
+      return compare('basPassword', hashedPassword)
+    })
+      .then(result => {
+      })
+  })
+});
