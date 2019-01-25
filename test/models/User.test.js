@@ -2,6 +2,7 @@ require('dotenv').config();
 require('../../lib/utils/connect')();
 const mongoose = require('mongoose');
 const User = require('../.././lib/models/User');
+const { tokenized } = require('../../lib/utils/token');
 
 
 
@@ -32,6 +33,29 @@ describe('test the user model', () => {
         user.save()
             .then(user => {
                 expect(user.passwordHash).toEqual(expect.any(String));
+            });
+    });
+    it('compares the clear the hashed password', () => {
+        const user = new User({ email: 'LOL@gmail.com', password: 'YES' });
+        return user.save()
+            .then(user => {
+                return user.compare('YES');
+            })
+            .then(result => {
+                expect(result).toBeTruthy();
+            });
+    });
+    it('can find a user from a token', () => {
+        const user = new User({ email: 'LOL@gmail.com', password: 'YES' });
+        return user.save()
+            .then(user => {
+                return tokenized(user);
+            })
+            .then(token => {
+                return User.findByToken(token);
+            })
+            .then(user => {
+                expect(user).toEqual('lance');
             });
     });
 });
