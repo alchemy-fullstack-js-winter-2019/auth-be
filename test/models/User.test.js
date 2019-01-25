@@ -58,4 +58,16 @@ describe('user model tests', () => {
         });
       });
   });
+  it('can create a token with an instanced method', () => {
+    return User.create({
+      email:'test@test.com',
+      password: 'password'
+    })
+      .then(user => {
+        return user.makeToken();
+      })
+      .then(result => {
+        expect(result).toEqual(expect.any(String));
+      });
+  });
 });
