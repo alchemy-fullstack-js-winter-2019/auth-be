@@ -66,8 +66,8 @@ describe('user model tests', () => {
       .then(user => {
         return user.makeToken();
       })
-      .then(result => {
-        expect(result).toEqual(expect.any(String));
+      .then(token => {
+        expect(token).toEqual(expect.any(String));
       });
   });
 });
