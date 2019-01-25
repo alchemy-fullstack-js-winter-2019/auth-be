@@ -5,14 +5,17 @@ require('../../lib/utils/connect')();
 const User = require('../../lib/models/User');
 const { Types } = require('mongoose');
 const mongoose = require('mongoose');
+const { tokenize } = require('../../lib/utils/token');
 
-beforeEach(done => {
-  return mongoose.connection.dropDatabase(() => {
-    done();
-  });
-});
+
 
 describe('User model', () => {
+
+  beforeEach(done => {
+    return mongoose.connection.dropDatabase(() => {
+      done();
+    });
+  });
   it('validates a good model', () =>  {
     const user = new User({ email: 'test@test.com' });
     expect(user.toJSON()).toEqual({ email: 'test@test.com', _id: expect.any(Types.ObjectId) });
@@ -39,16 +42,64 @@ describe('User model', () => {
       password: 'password' 
     })
       .then(user => {
-        user.save()
-          .then(user => {
-            expect(user.passwordHash).toEqual(expect.any(String));
-            expect(user.password).toBeUndefined();
-          });
-        
+        expect(user.passwordHash).toEqual(expect.any(String));
+        expect(user.password).toBeUndefined();        
       });      
   });  
 
+  it('can compare good passwords', () => {
+    return User.create({
+      email: 'carmen@email.com', 
+      password: 'pa55w0rd' 
+    })
+      .then(user => {
+        return user.compare('pa55w0rd');
+      })
+      .then(result => {
+        expect(result).toBeTruthy();
+      });
+  });
+
+  it('can compare bad passwords', () => {
+    return User.create({
+      email: 'carmen@email.com', 
+      password: 'pa55w0rd' 
+    })
+      .then(user => {
+        return user.compare('badPassword');
+      })
+      .then(result => {
+        expect(result).toBeFalsy();
+      });
+  });
+
+  it('can find a user by token', () => {
+    return User.create({
+      email: 'carmen@email.com', 
+      password: 'pa55w0rd'
+    })
+      .then(user => {
+        // create token with tokenize
+        const token = tokenize(user);
+        
+        // -> then findByToken (token)
+        return User.findByToken(token);
+      })
+      .then(userFromToken => {
+        expect(userFromToken).toEqual({
+          email: 'carmen@email.com', 
+          passwordHash: expect.any(String),
+          _id: expect.any(String),
+          __v: 0
+        });
+      });
+        
+  });
 });
+
+
+
+
 
 
 
