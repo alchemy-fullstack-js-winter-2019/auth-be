@@ -60,7 +60,7 @@ describe('User model test', () => {
       });
   });
 
-  it('can find a user by token', () => {
+  it('can find a user by token and removes version and password hash', () => {
     const user = new User({ email: 'test@test.com', password: 'NO' });
     return user.save()
       .then(user => {
@@ -77,7 +77,14 @@ describe('User model test', () => {
       });
   });
 
-  it('can transform the json to remove v and password hash', () => {
-
+  it('returns a token', () => {
+    const user = new User({ email: 'test@test.com', password: 'NO' });
+    return user.save()
+      .then(user => {
+        return user.authToken();
+      })
+      .then(result => {
+        expect(result).toEqual(expect.any(String));
+      });
   });
 });
