@@ -3,6 +3,7 @@ require('../../lib/utils/connect')();
 const mongoose = require('mongoose');
 const { Types } = require('mongoose');
 const User = require('../../lib/models/User');
+const { tokenize } = require('../../lib/utils/token');
 
 describe('User', () => {
   beforeEach(done => {
@@ -90,4 +91,26 @@ describe('User', () => {
         expect(res).toBeFalsy();
       });
   });
+
+  it('can find a user by token', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(user => {
+        // create a token out of the user
+        const token = tokenize(user);
+        // get the user from the token
+        return User.findByToken(token);
+      })
+      .then(foundUser => {
+        expect(foundUser).toEqual({
+          __v: 0,
+          _id: expect.any(String),
+          email: 'test@test.com',
+          passwordHash: expect.any(String)
+        });
+      });
+  });
+
 });
