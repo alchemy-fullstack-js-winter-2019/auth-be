@@ -58,4 +58,21 @@ describe('test the user model', () => {
                 expect(user.email).toContain('LOL@gmail.com');
             });
     });
+    it('can return a JSON object of the user without certain fields', () => {
+        const user = new User({ email: 'LOL@gmail.com', password: 'YES' });
+        return user.save()
+            .then(user => {
+                expect(user.email).toContain('LOL@gmail.com');
+            });
+    });
+    it('it returns a JSON object using the static method', () => {
+        const user = new User({ email: 'LOL@gmail.com', password: 'YES' });
+        return user.save()
+            .then(user => {
+                return user.authToken();
+            })
+            .then(res => {
+                expect(res).toEqual(expect.any(String));
+            });
+    });
 });
