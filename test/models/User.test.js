@@ -2,6 +2,8 @@ const User = require('../../lib/models/User');
 const mongoose = require('mongoose');
 require('dotenv').config();
 require('../../lib/utils/connect')();
+const { tokenize } = require('../../lib/utils/token');
+
 
 describe('user model', () => {
   beforeEach(done => {
@@ -50,20 +52,44 @@ describe('user model', () => {
     user.save()
       .then(user => {
         expect(user.passwordHash).toBeDefined();
+        expect(user.passwordHash).toEqual(expect.any(String));
         expect(user.password).toBeUndefined();
       });
 
   });
 
-  // it('returns true when clear text password matches the password hash', () => {
-  //   const password = 'password';
-  //   const user = User.create({ email: 'test@test.com', password });
-  //   expect(user.compare(password)).toBeTruthy();
-  // });
+  it('returns true when clear text password matches the password hash', () => {
+    const password = 'password';
+    return User.create({ email: 'test@test.com', password })
+      .then(user => {
+        return user.compare(password);
+      })
+      .then(result => {
+        expect(result).toBeTruthy();
+      });
+  });
 
-  // it('returns false when clear text password doesn\'t match the password hash', () => {
-  //   const password = 'password';
-  //   const user = User.create({ email: 'test@test.com', password });
-  //   expect(user.compare('wrongpassword')).toBeFalsy();
-  // });
+  it('returns false when clear text password matches the password hash', () => {
+    const password = 'password';
+    return User.create({ email: 'test@test.com', password })
+      .then(user => {
+        return user.compare('badpassword');
+      })
+      .then(result => {
+        expect(result).toBeFalsy();
+      });
+  });
+
+  it('can return a user with findByToken', () => {
+    return User.create({ email: 'test@test.com', password: 'password' })
+      .then(user => {
+        return tokenize(user);
+      })
+      .then(token => {
+        return User.findByToken(token);
+      })
+      .then(foundUser => {
+        expect(foundUser.email).toEqual('test@test.com');
+      });
+  });
 });
