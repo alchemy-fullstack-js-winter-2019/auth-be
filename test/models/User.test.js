@@ -98,23 +98,19 @@ describe('User tests', () => {
       .then(user => {
         return tokenize(user);
       })
-      .then(userToken => {
-        return User.findByToken(userToken);
-      })
+      .then(userToken => User.findByToken(userToken))
       .then(userFromToken => {
         expect(userFromToken.passwordHash).toBeUndefined();
         expect(userFromToken.__v).toBeUndefined();
       });
   });
 
-  it('returns a token for a user', () => {
+  it('returns auth token for user', () => {
     return User.create({
       email: 'test@test.com', 
       password: 'passwordTest'
     })
-      .then(user => {
-        return user.authToken();
-      })
+      .then(user => user.authToken())
       .then(returnedToken => {
         expect(returnedToken).toEqual(expect.any(String));
       });
