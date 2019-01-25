@@ -6,7 +6,9 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch --verbose --runInBand",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "lint": "eslint .",
+    "pretest": "npm run lint"
   },
   "jest": {
     "testEnvironment": "node"
