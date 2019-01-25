@@ -4,6 +4,7 @@ require('../../lib/utils/connect')();
 const mongoose = require('mongoose');
 const { Types } = require('mongoose');
 const User = require('../../lib/models/User');
+const { tokenize } = require('../../lib/utils/token');
 
 
 describe('User tests', () => {
@@ -65,5 +66,30 @@ describe('User tests', () => {
         expect(res).toBeFalsy();
       });
   });
+
+  it('can untokenize a user', () => {
+    // Create a new user if one doesn't exist
+    return User.create({ 
+      email: 'test@test.com', 
+      password: 'passwordTest' 
+    })
+    // Make the user into a token
+      .then(user => {
+        return tokenize(user);
+      })
+      // Find the token and untokenize it to find user
+      .then(userToken => {
+        return User.findByToken(userToken);
+      })
+      // Expect the user object back including the id and version
+      .then(userFromToken => {
+        expect(userFromToken).toEqual({
+          email: 'test@test.com',
+          _id: expect.any(String),
+        });
+      });
+  });
+
+  
 
 });
