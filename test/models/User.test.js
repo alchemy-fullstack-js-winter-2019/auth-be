@@ -101,4 +101,14 @@ describe('user model', () => {
         expect(foundUser).toEqual({ email: 'test@test.com', _id: expect.any(String) });
       });
   });
+
+  it('can create an instance method and return a token for a user', () => {
+    return User.create({ email: 'test@test.com', password: 'test' })
+      .then(user => {
+        return user.authToken();
+      })
+      .then(result => {
+        expect(result).toEqual(expect.any(String));
+      });
+  });
 });
