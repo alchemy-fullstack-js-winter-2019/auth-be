@@ -116,7 +116,7 @@ describe('User tests', () => {
         return user.authToken();
       })
       .then(returnedToken => {
-        expect(returnedToken).toBeDefined();
+        expect(returnedToken).toEqual(expect.any(String));
       });
   });
 
