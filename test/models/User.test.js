@@ -4,6 +4,7 @@ const { Types } = require('mongoose');
 const User = require('../../lib/models/User');
 const mongoose = require('mongoose');
 
+
 describe('user model tests', () => {
   beforeEach(done => {
     mongoose.connection.dropDatabase(done);
@@ -28,6 +29,18 @@ describe('user model tests', () => {
       .then(user => {
         expect(user.passwordHash).toEqual(expect.any(String));
         expect(user.password).toBeUndefined();
+      });
+  });
+  it('can compare passwords', () => {
+    return User.create({
+      email:'test@test.com',
+      password: 'password'
+    })
+      .then(user =>{
+        return user.compare('password');
+      })
+      .then(result => {
+        expect(result).toBeTruthy();
       });
   });
 });
