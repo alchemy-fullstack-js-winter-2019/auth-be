@@ -53,11 +53,9 @@ describe('User Model', () => {
     return User.create({
       email: 'test@test.com',
       password: 'password'
-    }).then(user => {
-      return user.compare('password');
-    }).then(res => {
-      expect(res).toBeTruthy();
-    });
+    })
+      .then(user => user.compare('password'))
+      .then(res => expect(res).toBeTruthy());
   });
 
   it('compares BAD password with hashedPassword', () => {
@@ -65,12 +63,8 @@ describe('User Model', () => {
       email: 'test@test.com',
       password: 'password'
     })
-      .then(user => {
-        return user.compare('p3ssword');
-      })
-      .then(res => {
-        expect(res).toBeFalsy();
-      });
+      .then(user => user.compare('p3ssword'))
+      .then(res => expect(res).toBeFalsy());
   });
 
   it('gets a user by its token', () => {
@@ -78,19 +72,37 @@ describe('User Model', () => {
       email: 'test@test.com',
       password: 'password'
     })
-      .then(user => {
-        return tokenize(user);
-      })
-      .then(token => {
-        return User.findByToken(token);
-      })
+      .then(user => tokenize(user))
+      .then(token => User.findByToken(token))
       .then(foundUser => {
         expect(foundUser).toEqual({ 
           email: 'test@test.com',
-          passwordHash: expect.any(String),
-          _id: expect.any(String),
-          __v: 0
+          _id: expect.any(String)
         });
+      });
+  });
+
+  it('remove passwordHash from user JSON rep', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(user => user.toJSON())
+      .then(json => {
+        expect(json).toEqual({ 
+          _id: expect.any(Types.ObjectId),
+          email: 'test@test.com'
+        });
+      });
+  });
+
+  it('returns a token for a user', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    }).then(user => user.authToken())
+      .then(returned => {
+        expect(returned).toEqual(expect.any(String));
       });
   });
 
