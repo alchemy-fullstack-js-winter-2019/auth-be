@@ -74,11 +74,34 @@ describe('user model', () => {
       .then(foundUser => {
         expect(foundUser).toEqual({ 
           email: 'test@test.com', 
-          passwordHash: expect.any(String),
-          _id: expect.any(String),
-          __v: 0
+          _id: expect.any(String)
         });
+      });
+  });
+  it('deletes the __v and passwordHash', () => {
+    return User.create({
+      email: 'test@test.com', 
+      password: 'password' 
+    })
+      .then(user => {
+        expect(user.toJSON()).toEqual({
+          email: 'test@test.com', 
+          _id: expect.any(Object)
+        });
+      });
+  });
+  it('creates an auth token', () => {
+    return User.create({
+      email: 'test@test.com', 
+      password: 'password' 
+    })
+      .then(user => {
+        return user.authToken();
+      })
+      .then(token => {
+        expect(token).toEqual(expect.any(String));
       });
   });
 
 });
+
