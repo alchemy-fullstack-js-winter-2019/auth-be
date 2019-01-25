@@ -72,9 +72,7 @@ describe('User model test', () => {
       .then(user => {
         expect(user).toEqual({
           email: 'test@test.com',
-          passwordHash: expect.any(String),
-          _id: expect.any(String),
-          __v: 0
+          _id: expect.any(String)
         });
       });
   });
