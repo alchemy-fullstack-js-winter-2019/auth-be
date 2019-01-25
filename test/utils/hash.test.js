@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const { hash, compare } = require('../../lib/utils/hash');
 
+
 describe('hashing functions', () => {
   it('hashes a password', () => {
     const hashedPassword = bcrypt.hash('password', 10)
