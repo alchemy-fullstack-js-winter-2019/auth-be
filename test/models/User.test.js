@@ -5,7 +5,7 @@ require('../../lib/utils/connect')();
 const User = require('../../lib/models/User');
 const { Types } = require('mongoose');
 const mongoose = require('mongoose');
-const { tokenize } = require('../../lib/utils/token');
+const { tokenize, untokenize } = require('../../lib/utils/token');
 
 
 
@@ -91,6 +91,21 @@ describe('User model', () => {
           _id: expect.any(String),
         });
       });
+  });
+
+  it(' can create auth token', () => {
+    return User.create({
+      email: 'carmen@email.com', 
+      password: 'pa55w0rd'
+    })
+      .then(user => user.authToken())
+      .then(untokenize) 
+      .then(user => {
+        expect(user).toEqual({
+          email: 'carmen@email.com', 
+          _id: expect.any(String),
+        });
+      });        
   });
 });
 
