@@ -83,9 +83,7 @@ describe('user model', () => {
   it('can return a user with findByToken', () => {
     return User.create({ email: 'test@test.com', password: 'password' })
       .then(user => {
-        return tokenize(user);
-      })
-      .then(token => {
+        const token = tokenize(user);
         return User.findByToken(token);
       })
       .then(foundUser => {
@@ -96,9 +94,7 @@ describe('user model', () => {
   it('can transform the json to remove the v and password hash', () => {
     return User.create({ email: 'test@test.com', password: 'password' })
       .then(user => {
-        return tokenize(user);
-      })
-      .then(token => {
+        const token = tokenize(user);
         return User.findByToken(token);
       })
       .then(foundUser => {
