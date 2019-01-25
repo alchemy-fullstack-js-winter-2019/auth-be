@@ -86,7 +86,7 @@ describe('user model', () => {
       .then(userFromToken => {
         expect(userFromToken).toEqual({
           email: 'test@test.com',
-          _id: expect.any(mongoose.Types.ObjectId),
+          _id: expect.any(String)
         });
 
       });
