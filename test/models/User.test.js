@@ -55,7 +55,7 @@ describe('test the user model', () => {
                 return User.findByToken(token);
             })
             .then(user => {
-                expect(user).toEqual('lance');
+                expect(user.email).toContain('LOL@gmail.com');
             });
     });
 });
