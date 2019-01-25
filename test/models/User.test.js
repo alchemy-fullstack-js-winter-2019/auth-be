@@ -107,4 +107,17 @@ describe('User tests', () => {
       });
   });
 
+  it('returns a token for a user', () => {
+    return User.create({
+      email: 'test@test.com', 
+      password: 'passwordTest'
+    })
+      .then(user => {
+        return user.authToken();
+      })
+      .then(returnedToken => {
+        expect(returnedToken).toBeDefined();
+      });
+  });
+
 });
