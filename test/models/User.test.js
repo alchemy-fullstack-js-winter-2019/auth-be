@@ -83,8 +83,8 @@ describe('User model test', () => {
       .then(user => {
         return user.authToken();
       })
-      .then(result => {
-        expect(result).toEqual(expect.any(String));
+      .then(token => {
+        expect(token).toEqual(expect.any(String));
       });
   });
 });
