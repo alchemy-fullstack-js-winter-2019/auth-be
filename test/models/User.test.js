@@ -20,4 +20,12 @@ describe('User model', () => {
 
     expect(errors.email.message).toEqual('Email required');
   });
+
+  it('stores a _tempPassword', () => {
+    const user = new User({
+      email: 'test@test.com',
+      password: 'passtotheword'
+    });
+    expect(user._tempPassword).toEqual('passtotheword');
+  });
 });
