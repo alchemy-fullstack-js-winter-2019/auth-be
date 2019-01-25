@@ -2,24 +2,29 @@ require('dotenv').config();
 require('../../lib/utils/connect')();
 const mongoose = require('mongoose');
 const User = require('../../lib/models/User');
+const { tokenize } = require('../../lib/utils/token');
 
 describe('user model', () => {
   beforeEach(done => {
     mongoose.connection.dropDatabase(done);
   });
+
   it('validates a good model', () => {
     const user = new User({ email: 'test@test.com' });
     expect(user.toJSON()).toEqual({ email: 'test@test.com', _id: expect.any(mongoose.Types.ObjectId) });
   });
+
   it('has a required email', () => {
     const user = new User({});
     const errors = user.validateSync().errors;
     expect(errors.email.message).toEqual('Email required');
   });
+
   it('stores a _tempPassword', () => {
     const user = new User({ email: 'test@test.com', password: 'PWORD' });
     expect(user._tempPassword).toEqual('PWORD');
   });
+
   it('can save a hashed password', () => {
     const user = new User({ email: 'test@test.com', password: 'PASSWORD' });
     user.save()
@@ -54,4 +59,26 @@ describe('user model', () => {
         expect(results).toBeFalsy();
       });
   });
+
+  it('can find by token', () => {
+    return User.create({
+      email: 'test@test.com', 
+      password: 'password' 
+    })
+      .then(user => {
+        return tokenize(user);
+      })
+      .then(token => {
+        return User.findByToken(token);
+      })
+      .then(foundUser => {
+        expect(foundUser).toEqual({ 
+          email: 'test@test.com', 
+          passwordHash: expect.any(String),
+          _id: expect.any(String),
+          __v: 0
+        });
+      });
+  });
+
 });
