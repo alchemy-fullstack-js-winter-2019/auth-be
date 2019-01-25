@@ -3,7 +3,7 @@ require('../../lib/utils/connect')();
 const User = require('../../lib/models/User');
 const { Types } = require('mongoose');
 const mongoose = require('mongoose');
-const { tokenize } = require('../../lib/utils/token');
+const { tokenize, untokenize } = require('../../lib/utils/token');
 
 describe('User Model', () => {
   beforeEach(done => {
@@ -101,14 +101,19 @@ describe('User Model', () => {
       email: 'test@test.com',
       password: 'password'
     }).then(user => user.authToken())
-      .then(token => {
-        expect(token).toEqual(expect.any(String));
+      .then(untokenize)
+      .then(user => {
+        expect(user).toEqual({
+          email: 'test@test.com',
+          _id: expect.any(String)
+        });
       });
   });
-
-  afterAll((done) => {
-    mongoose.disconnect(done);
-  }); 
 });
+
+afterAll((done) => {
+  mongoose.disconnect(done);
+}); 
+
 
 
