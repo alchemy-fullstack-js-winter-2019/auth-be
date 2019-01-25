@@ -2,6 +2,7 @@ require('dotenv').config();
 require('../../lib/utils/connect')();
 const mongoose = require('mongoose');
 const { Types } = require('mongoose');
+const { tokenize } = require('tokenizer');
 
 const User = require('../../lib/models/User');
 
@@ -73,6 +74,26 @@ describe('user model', () => {
       .then(result => {
         expect(result).toBeFalsy();
       });
+  });
+
+  it('can find a user by token', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(user => {
+        const token = tokenize(user);
+        return user.findByToken(token);
+      })
+      .then(userFromToken => {
+        expect(userFromToken).toEqual({
+          email: 'test@test.com',
+          passwordHash: expect.any(String),
+          _id: expect.any(mongoose.Types.ObjectId),
+          __v: 0
+        });
+      });
+      
   });
 
 });
