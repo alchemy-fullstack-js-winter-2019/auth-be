@@ -2,7 +2,7 @@ require('dotenv').config();
 require('../../lib/utils/connect')();
 const mongoose = require('mongoose');
 const { Types } = require('mongoose');
-const { tokenize } = require('tokenizer');
+const { tokenize } = require('../../lib/utils/token');
 
 const User = require('../../lib/models/User');
 
