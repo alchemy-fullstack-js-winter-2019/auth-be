@@ -3,7 +3,7 @@ require('../../lib/utils/connect')();
 const mongoose = require('mongoose');
 const { Types } = require('mongoose');
 const User = require('../../lib/models/User');
-const { tokenize } = require('../../lib/utils/token');
+const { tokenize, untokenize } = require('../../lib/utils/token');
 
 describe('User', () => {
   beforeEach(done => {
@@ -119,6 +119,21 @@ describe('User', () => {
         expect(userToJson).toEqual({
           _id: expect.any(Types.ObjectId),
           email: 'test@test.com'
+        });
+      });
+  });
+
+  it('can create an authToken', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(user => user.authToken())
+      .then(untokenize)
+      .then(user => {
+        expect(user).toEqual({
+          email: 'test@test.com',
+          _id: expect.any(String)
         });
       });
   });
