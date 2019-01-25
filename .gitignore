@@ -1,4 +1,6 @@
-.env 
-.env.example
 node_modules
-lab
+.DS_Store
+.vs*
+.env
+.env.example
+classwork
