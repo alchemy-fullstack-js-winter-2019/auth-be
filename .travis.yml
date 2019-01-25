@@ -4,4 +4,4 @@ node_js: "node"
 services:
   - mongodb
 env:
-  - MONGODB_URI=mongodb://127.0.0.1:27017/userAuth
+  - MONGODB_URI=mongodb://127.0.0.1:27017/userAuth AUTH_SECRET=changeMeNow
