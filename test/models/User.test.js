@@ -48,4 +48,13 @@ describe('User model', () => {
       .then(user => user.compare('passit'))
       .then(res => expect(res).toBeTruthy());
   });
+
+  it('can compare bad passwords', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'passit'
+    })
+      .then(user => user.compare('dontpassit'))
+      .then(res => expect(res).toBeFalsy);
+  });
 });
