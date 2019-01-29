@@ -17,7 +17,7 @@ describe('ensureUser middleware', () => {
 
   it('can ensure auth', () => {
     const req = {
-      get: () => 'abcd123'
+      post: () => 'abcd123'
     };
     const next = jest.fn();
     
@@ -26,4 +26,5 @@ describe('ensureUser middleware', () => {
 
     expect(next).toHaveBeenCalled();
   });
+
 });

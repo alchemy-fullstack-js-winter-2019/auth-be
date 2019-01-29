@@ -53,8 +53,19 @@ describe.only('auth', () => {
           .post('/auth/signin')
           .send({ email: user.email, password: 'p3ss' })
           .then(res => {
-            console.log('RESULT', res.text);
-            expect(res.statusCode).toEqual(401);
+            expect(res.status).toEqual(401);
+          });
+      });
+  });
+
+  it('cannot sign in a user with a bad email', () => {
+    return User.create({ email: 'banana@huh.com', password: 'pass' })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({ email: 'bademail@huh.com', password: 'p3ss' })
+          .then(res => {
+            expect(res.status).toEqual(401);
           });
       });
   });
