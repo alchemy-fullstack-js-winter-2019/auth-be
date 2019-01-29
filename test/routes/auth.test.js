@@ -58,13 +58,11 @@ describe('test user routes', () => {
                     });
             })
             .then(({ body }) => {
-                console.log('token after signin', body.token);
                 return request(app)
                     .get('/auth/verify')
                     .set('Authorization', `Bearer ${body.token}`);
             })
             .then(res => {
-                console.log('res', res.body);
                 expect(res.body).toEqual({ _id: expect.any(String), email: 'lance@gmail.com' });
             });
     });

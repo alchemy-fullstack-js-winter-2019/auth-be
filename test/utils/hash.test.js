@@ -36,7 +36,6 @@ describe('test bcrypt', () => {
             .then(res => {
                 bcryptjs.compare('hello', res)
                     .then(result => {
-                        console.log(result);
                         expect(result).toBeTruthy();
                     });
             });
