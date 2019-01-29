@@ -39,23 +39,58 @@ describe('app', () => {
       .create({
         email: 'user@email.com', password: 'userpass'
       })
-      .then(user => {
+      .then(() => {
         return request(app)
           .post('/auth/signin')
           .send({
-            email: 'user@email.com', password: 'userpass'
-          })
-          .then(res => {
-            expect(res.body).toEqual({
-              user: {
-                _id: expect.any(String),
-                email: 'user@email.com'
-              },
-              token: expect.any(String)
-            });
-          });
+            email: 'user@email.com', password: 'userpass' });
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          user: {
+            _id: expect.any(String),
+            email: 'user@email.com'
+          },
+          token: expect.any(String)
+        });
       });
-    
+  });
+  it('can not /signin a user with bad password', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email: 'test@test.com',
+            password: 'badPassword'
+          });
+      })
+      .then(res => {
+        expect(res.status).toEqual(401);
+      });
+  });
 
+  it('can not /signin a user with bad email', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email: 'badEmail@test.com',
+            password: 'password'
+          });
+      })
+      .then(res => {
+        expect(res.status).toEqual(401);
+      });
   });
 });
+
+
+
