@@ -13,6 +13,9 @@
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.4.6"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "devDependencies": {
     "eslint": "^5.12.1",
     "jest": "^23.6.0",
