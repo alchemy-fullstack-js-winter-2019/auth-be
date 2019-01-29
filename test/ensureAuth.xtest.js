@@ -27,23 +27,23 @@ describe('ensureAuth', ()=> {
         expect(next).toHaveBeenCalled();
       });
   });
-  it('ha a verify/ rout', () => {
-    return User.create({ 
-      email: 'test@test',
-      password: 'password'
-    })
-      .then(user => {
+  // it('ha a verify/ rout', () => {
+  //   return User.create({ 
+  //     email: 'test@test',
+  //     password: 'password'
+  //   })
+  //     .then(user => {
 
-      })
-      .then(token => {
+  //     })
+  //     .then(token => {
 
-      })
-      .then(res => {
-        expect(res.body).toEqual({
-          email: 'test@tes',
-          password: 'password'
-        });
-      });
-  });
+  //     })
+  //     .then(res => {
+  //       expect(res.body).toEqual({
+  //         email: 'test@tes',
+  //         password: 'password'
+  //       });
+  //     });
+  // });
 
 });

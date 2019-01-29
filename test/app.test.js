@@ -26,7 +26,7 @@ describe('userAuth', ()=> {
     mongoose.connection.close(done);
   });
 
-  it.only('can sign up a user', () => {
+  it('can sign up a user', () => {
     return request(app)
       .post('/auth/signup')
       .send({ email: 'johnny@email.com', password: 'password' })
@@ -41,17 +41,23 @@ describe('userAuth', ()=> {
       });
   });
 
-  it('checks for sign in', ()=> {
-    return createUser('johnny')
-      .then(createdUser => {
+  it.only('signs a user in', ()=> {
+    return User.create({
+      email: 'johnny@email.com',
+      password: 'password'
+    })
+      .then(() => {
         return request(app)
-          .post('auth/signin')
-          .send(createdUser.email);
+          .post('/auth/signin')
+          .send({
+            email: 'johnny@email.com',
+            password: 'password'
+          });
       })
       .then(res => {
         expect(res.body).toEqual({
           user:{
-            email: '',
+            email: 'johnny@email.com',
             _id: expect.any(String)
           },
           token: expect.any(String)
