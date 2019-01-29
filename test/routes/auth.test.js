@@ -5,12 +5,16 @@ const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../../lib/app');
 
-// const createUser = (email, password) => {
-//   return request(app)
-//     .post('/auth/signup')
-//     .send({ email, password })
-//     .then(res => res.body);
-// };
+const createUser = (
+  email = 'default@email.com',
+  password = 'defaultPassword'
+) => {
+  return User.create({
+    email,
+    password
+  })
+    .then(res => res.body);
+};
 
 describe('auth route', () => {
   beforeEach(done => {
@@ -23,7 +27,7 @@ describe('auth route', () => {
     done();
   });
 
-  it('can sign up a new user and include token', done => {
+  it('can sign up a new user and include token', () => {
     const user = {
       email: 'test@test.com',
       password: 'password'
@@ -39,27 +43,26 @@ describe('auth route', () => {
           },
           token: expect.any(String),
         });
-        done();
       });
   });
 
   it('can sign in a user', () => {
     return User.create({
-      email: 'b@b.com',
-      password: 'booboo'
+      email: 'cari.pizza@pizza.io',
+      password: 'tomatoSlice'
     })
       .then(createdUser => {
         return request(app)
           .post('/auth/signin')
           .send({
-            email: 'b@b.com',
-            password: 'booboo'
+            email: 'cari.pizza@pizza.io',
+            password: 'tomatoSlice'
           })
           .then(res => {
             expect(res.body).toEqual({
               user: {
                 _id: createdUser._id.toString(),
-                email: 'b@b.com'
+                email: 'cari.pizza@pizza.io'
               },
               token: expect.any(String)
             });
@@ -69,54 +72,43 @@ describe('auth route', () => {
       .catch(console.log);
   });
 
-  it('can respond with message if bad password', done => {
-    return User.create({
-      email: 'b@b.com',
-      password: 'booboo'
-    })
-      .then(user => {
+  it('can respond with message if bad password', () => {
+    return createUser('xyz.AMAZING@outlook.net', 'ReallySecure')
+      .then(() => {
         return request(app)
           .post('/auth/signin')
-          .send({ email: user.email, password: 'bad' })
+          .send({ email: 'xyz.AMAZING@outlook.net', password: 'bad' })
           .then(res => {
             expect(res.statusCode).toEqual(401);
             expect(res.body).toEqual({
               error: 'Bad email or password'
             });
-            done();
           });
       });
   });
 
-  it('can respond with message if bad email', done => {
-    return User.create({
-      email: 'b@b.com',
-      password: 'booboo'
-    })
-      .then(user => {
+  it('can respond with message if bad email', () => {
+    return createUser('z.z@zz-top.biz', 'FBIvan#8')
+      .then(() => {
         return request(app)
           .post('/auth/signin')
-          .send({ email: 'k@k.com', password: user.password })
+          .send({ email: 'k@k.com', password: 'FBIvan#8' })
           .then(res => {
             expect(res.statusCode).toEqual(401);
             expect(res.body).toEqual({
               error: 'Bad email or password'
             });
-            done();
           });
       });
   });
 
   it('has a /verify route', () => {
-    return User.create({
-      email: 'b@b.com',
-      password: 'booboo'
-    })
-      .then(user => {
+    return createUser('b@b.com', 'booboo')
+      .then(() => {
         return request(app)
           .post('/auth/signin')
           .send({
-            email: user.email,
+            email: 'b@b.com',
             password: 'booboo'
           })
           .then(res => res.body.token);
