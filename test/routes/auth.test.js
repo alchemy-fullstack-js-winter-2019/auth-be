@@ -5,8 +5,15 @@ const mongoose = require('mongoose');
 const request = require('supertest');
 
 const app = require('../../lib/app');
+const User = require('../../lib/models/User');
+
+
 
 describe('auth test', () => {
+
+  const createUser = ({ email = 'schnepherd@gmail.com', password }) => {
+    return User.create({ email, password });
+  };
 
   beforeEach(done => {
     return mongoose.connection.dropDatabase(() => {
@@ -27,8 +34,26 @@ describe('auth test', () => {
             email: 'newUser@test.com',
             _id: expect.any(String)
           },
-          token: expect.any(String),
+          token: expect.any(String)
         });
+      });
+  });
+
+  it('sign in an existing user', () => {
+    return createUser('password')
+      .then(createdUser => {
+        return request(app)
+          .post('/auth/signin')
+          .send(createdUser)
+          .then(res => {
+            expect(res.body).toEqual({
+              user: {
+                email: 'schnepherd@gmail.com',
+                _id: expect.any(String),
+              },
+              token: expect.any(String)
+            });
+          });
       });
   });
 
