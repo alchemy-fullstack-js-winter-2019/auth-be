@@ -35,8 +35,7 @@ describe('test user routes', () => {
 
     it('a user can sign in', () => {
         return createUser('lance@gmail.com')
-            .then(createdUser => {
-                console.log(createdUser);
+            .then(() => {
                 return request(app)
                     .post('/auth/signin')
                     .send({
@@ -44,9 +43,29 @@ describe('test user routes', () => {
                         password: 'yes'
                     })
                     .then(res => {
-                        console.log(res.body);
                         expect(res.text).toContain('lance@gmail.com');
                     });
+            });
+    });
+    it('can verify a user', () => {
+        return createUser('lance@gmail.com')
+            .then(() => {
+                return request (app)
+                    .post('/auth/signin')
+                    .send({
+                        email: 'lance@gmail.com',
+                        password: 'yes'
+                    });
+            })
+            .then(({ body }) => {
+                console.log('token after signin', body.token);
+                return request(app)
+                    .get('/auth/verify')
+                    .set('Authorization', `Bearer ${body.token}`);
+            })
+            .then(res => {
+                console.log('res', res.body);
+                expect(res.body).toEqual({ _id: expect.any(String), email: 'lance@gmail.com' });
             });
     });
 });
