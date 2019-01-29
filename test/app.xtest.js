@@ -29,7 +29,7 @@ describe('userAuth', ()=> {
   it.only('can sign up a user', () => {
     return request(app)
       .post('/auth/signup')
-      .send({ email: 'johnny@email.com', password: 'password'})
+      .send({ email: 'johnny@email.com', password: 'password' })
       .then(res => {
         expect(res.body).toEqual({
           user:{
@@ -44,19 +44,20 @@ describe('userAuth', ()=> {
   it('checks for sign in', ()=> {
     return createUser('johnny')
       .then(createdUser => {
-        return Promise.all([
-          Promise.resolve(createdUser.email),
-          request(app)
-            .post(`/users/${createdUser.email}`)
-        ])
-          .then(([email, res]) => {
-            expect(res.body).toEqual({
-              email: 'johnny',
-              password: 'pass',
-              _id: expect.any(String)
-            });
-          });
+        return request(app)
+          .post('auth/signin')
+          .send(createdUser.email);
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          user:{
+            email: '',
+            _id: expect.any(String)
+          },
+          token: expect.any(String)
+        });
       });
+
   });
 
 
