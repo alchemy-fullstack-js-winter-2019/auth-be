@@ -2,7 +2,7 @@ require('dotenv').config();
 require('../../lib/utils/connect')();
 const mongoose = require('mongoose');
 const { Types } = require('mongoose');
-const { tokenize } = require('../../lib/utils/token');
+const { tokenize, untokenize } = require('../../lib/utils/token');
 const User = require('../../lib/models/User');
 
 describe('User model', () => {
@@ -55,6 +55,17 @@ describe('User model', () => {
           _id: expect.any(String),
           __v: 0
         });
+      });
+  });
+  it('can create an auth token', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(user => user.authToken())
+      .then(token => untokenize(token))
+      .then(token => {
+        expect(token).toEqual(expect.any(String));
       });
   });
 });
