@@ -2,7 +2,8 @@ require('dotenv').config();
 const connect = require('../lib/utils/connect');
 const User = require('../lib/models/User');
 const request = require('supertest');
-const mongoose = require('moongoose');
+const mongoose = require('mongoose');
+const User = require('../lib/models/User');
 
 const app = require('../lib/app');
 
@@ -57,6 +58,6 @@ describe('app', () => {
         });
       });
   });
-  
+
 });
 
