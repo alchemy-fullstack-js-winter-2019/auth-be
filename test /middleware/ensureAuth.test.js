@@ -1,6 +1,6 @@
 const { bearerToken, ensureAuth } = require('../lib/middleware/ensureAuth');
 const { tokenize } = require('../../lib/utils/token'); 
-const { HttpError } = require('../middleware/error');
+
 
 describe('ensureAuth', () => {
   it('can get a bearer token',  () => {
@@ -31,7 +31,7 @@ describe('ensureAuth', () => {
       .then(() => {
 
         expect(req.user).toEqual({ email: 'test@test.com' });
-        expect(next).toHaveBeenCalled(HttpError);
+        expect(next).toHaveBeenCalled(1);
       });
 
   });
