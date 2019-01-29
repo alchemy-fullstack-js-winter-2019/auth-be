@@ -96,6 +96,26 @@ describe('auth route testing', () => {
   });
 
   it('can verify a JWT on a user', () => {
-
+    return createUser('Aaron@Dennis.com')
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email: 'Aaron@Dennis.com',
+            password: 'password'
+          })
+          .then(res => res.body.token);
+      })
+      .then(token => {
+        return request(app)
+          .get('/auth/verify')
+          .set('Authorization', `Bearer ${token}`);
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          email: 'Aaron@Dennis.com',
+          _id: expect.any(String)
+        });
+      });
   });
 });
