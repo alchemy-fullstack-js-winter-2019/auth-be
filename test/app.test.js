@@ -41,7 +41,7 @@ describe('userAuth', ()=> {
       });
   });
 
-  it.only('signs a user in', ()=> {
+  it('signs a user in', ()=> {
     return User.create({
       email: 'johnny@email.com',
       password: 'password'
@@ -65,10 +65,38 @@ describe('userAuth', ()=> {
       });
 
   });
-
-
+  it('denies access with bad pw', ()=> {
+    return User.create({
+      email: 'johnny@email.com',
+      password: 'password'
+    })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email: 'johnny@email.com',
+            password: 'pass'
+          });
+      })
+      .then(res => {
+        expect(res.status).toEqual(401);
+      });
+  });
+  it.only('denies access with bad pw', ()=> {
+    return User.create({
+      email: 'johnny@email.com',
+      password: 'password'
+    })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email: 'johnny@.com',
+            password: 'pass'
+          });
+      })
+      .then(res => {
+        expect(res.status).toEqual(401);
+      });
+  });
 });
-
-
-
-
