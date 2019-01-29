@@ -6,7 +6,6 @@ describe('bcrypt', () => {
     return bcryptjs.hash('password', 10)
       .then(hashedPassword => {
         expect(hashedPassword).toBeDefined();
-        console.log(hashedPassword);      
       });
   });
 

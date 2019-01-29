@@ -3,6 +3,7 @@ require('../lib/utils/connect')();
 const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../lib/app');
+const User = require('../lib/models/User');
 
 const createUser = (email) => {
   return request(app)
@@ -90,31 +91,29 @@ describe('auth routes', () => {
       });
   });
 
-
+  it('has a /verify route', () => {
+    return User.create({ email: 'baller@gmail.com', password: 'abc' })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email: 'baller@gmail.com', 
+            password: 'abc'
+          });
+      })
+      .then(res => {
+        return request(app)
+          .get('/auth/verify')
+          .set('Authorization', `Bearer ${res.body.token}`);
+      })
+      .then(res => {
+        expect(res.body).toEqual({ email: 'baller@gmail.com', _id: expect.any(String) });
+      });
+  });
 
   afterAll((done) => {
     mongoose.disconnect(done);
   });
 });
-
-
-// describe('auth routes', () => {
-//   it('can signup a new user', () => {
-//     return request(app)
-//       .post('/auth/signup')
-//       .send({
-//         email: 'kristinhortsch@gmail.com',
-//         password: 'roxy1'
-//       })
-//       .then(res => {
-//         expect(res.body).toEqual({
-//           user: {
-//             email: 'kristinhortsch@gmail.com',
-//             _id: expect.any(String)
-//           },
-//           token: expect.any(String)
-//         });
-//       });
-//   });
 
 
