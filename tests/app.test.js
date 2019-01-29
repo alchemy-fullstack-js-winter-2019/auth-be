@@ -33,6 +33,21 @@ describe('app', () => {
         });
       });
   });
+
+  it('can sign in a user', () => {
+    return request(app)
+      .post('/auth/signin')
+      .send({ email: 'abel.j.quintero@gmail.com', password: 'password' })
+      .then(res => {
+        expect(res.body).toEqual({
+          user: {
+            _id: expect.any(String),
+            email: 'abel.j.quintero@gmail.com'
+          },
+          token: expect.any(String)
+        });
+      });
+  });
 });
 
 
