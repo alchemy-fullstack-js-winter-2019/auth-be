@@ -18,19 +18,16 @@ describe('ensureAuth', () => {
   });
 
   it('can ensureAuth', () => {
-    // use tokenize to create a token
     const token = tokenize({ email: 'test@test.com' });
 
-    // create req with the token
     const req = {
       token
     };
-
     const next = jest.fn();
 
     ensureAuth(req, {}, next)
       .then(() => {
-        // expect req.user to equal the token payload
+       
         expect(req.user).toEqual({ email: 'test@test.com' });
         expect(next).toHaveBeenCalled(1);
       });
