@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const { tokenize } = require('../../lib/utils/token');
 
 
-describe('user model tests', () => {
+describe.skip('user model tests', () => {
   beforeEach(done => {
     mongoose.connection.dropDatabase(done);
   });

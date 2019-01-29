@@ -17,6 +17,9 @@
     "superagent": "^4.1.0",
     "supertest": "^3.4.2"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "devDependencies": {},
   "scripts": {
     "lint": "eslint .",

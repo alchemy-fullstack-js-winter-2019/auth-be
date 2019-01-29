@@ -1,11 +1,25 @@
 require('dotenv').config();
-require('../lib/utils/connect')();
-const request = require('supertest');
-const app = require('../lib/app');
-const User = require('./models/User.test');
+const connect = require('../lib/utils/connect');
 
+const User = require('../lib/models/User');
+const request = require('supertest');
+const mongoose = require('mongoose');
+
+const app = require('../lib/app');
 
 describe('user tests', () => {
+  beforeAll(() => {
+    connect();
+  });
+    
+  beforeEach(done => {
+    mongoose.connection.dropDatabase(done);
+  });
+    
+  afterAll(done => {
+    mongoose.connection.close(done);
+  });
+    
   it('signs up a new user', () => {
     return request(app)
       .post('/auth/signup')
@@ -20,17 +34,49 @@ describe('user tests', () => {
         });
       });
   });
-  it('signs in a user', () => {
-    return request(app)
-      .post('/auth/signin')
-      .send({ email: 'tyler@gmail.com', password: 'abc123' })
+  it('can /signin a user', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email: 'test@test.com',
+            password: 'password'
+          });
+      })
       .then(res => {
         expect(res.body).toEqual({
-          user:{
-            email: 'tyler@gmail.com',
+          user: {
+            email: 'test@test.com',
             _id: expect.any(String)
           },
           token: expect.any(String)
+        });
+      });
+  });
+  it('has a /verify route', () => {
+    return User.create({ email: 'test@test.com', password: 'password' })
+      .then(user => {
+        console.log('user', user);
+        return request(app)
+          .post('/auth/signin')
+          .send({ email: 'test@test.com', password: 'password' })
+          .then(res => res.body.token);
+      })
+      .then(token => {
+        console.log('token', token);
+        return request(app)
+          .get('/auth/verify')
+          .set('Authorization', `Bearer ${token}`);
+      })
+      .then(res => {
+        console.log('res', res);
+        expect(res.body).toEqual({
+          email: 'test@test.com',
+          _id: expect.any(String)
         });
       });
   });
