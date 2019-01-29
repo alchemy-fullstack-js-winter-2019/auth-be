@@ -64,4 +64,38 @@ describe('auth route testing', () => {
           });
       });
   });
+
+  it('can not /signin a user with bad password', () => {
+    return createUser('Aaron@Dennis.com')
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email: 'Aaron@Dennis.com',
+            password: 'badPassword'
+          });
+      })
+      .then(res => {
+        expect(res.status).toEqual(401);
+      });
+  });
+
+  it('can not /signin a user with bad email', () => {
+    return createUser('Aaron@Dennis.com')
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email: 'badEmail@test.com',
+            password: 'password'
+          });
+      })
+      .then(res => {
+        expect(res.status).toEqual(401);
+      });
+  });
+
+  it('can verify a JWT on a user', () => {
+
+  });
 });
