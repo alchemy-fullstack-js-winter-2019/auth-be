@@ -81,4 +81,24 @@ describe('auth test', () => {
       });
   });
 
+  it('has a /verify route', () => {
+    User.create({ email: 'test@test.com', password: 'password' })
+      .then(user => {
+        return request(app)
+          .post('/auth/signup')
+          .send({ user });
+      })
+      .then(token => {
+        return request(app)
+          .get('/auth/verify')
+          .send(token)
+          .set('Authorization', `Bearer ${token}`);
+      })
+      .then(res => {
+        expect(res.body).toEqual({ 
+          email: 'test@test.com', 
+          password: 'password' });
+      });
+  });
+
 });
