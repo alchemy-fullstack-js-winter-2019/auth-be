@@ -1,4 +1,4 @@
-const { bearerToken, ensureAuth } = require('../lib/middleware/ensureAuth');
+const { bearerToken, ensureAuth } = require('../../lib/middleware/ensureAuth');
 const { tokenize } = require('../../lib/utils/token'); 
 
 
