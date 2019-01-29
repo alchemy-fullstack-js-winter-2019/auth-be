@@ -14,7 +14,9 @@ describe('User Model', () => {
 
   it('validates a good model', () => {
     const user = new User({ email: 'test@test.com' });
-    expect(user.toJSON()).toEqual({ _id: expect.any(Types.ObjectId), email: 'test@test.com' });
+    expect(user.toJSON()).toEqual({ 
+      _id: expect.any(Types.ObjectId), 
+      email: 'test@test.com' });
   });
 
   it('has a required email', () => {
@@ -109,11 +111,11 @@ describe('User Model', () => {
         });
       });
   });
+  afterAll((done) => {
+    mongoose.disconnect(done);
+  }); 
 });
 
-afterAll((done) => {
-  mongoose.disconnect(done);
-}); 
 
 
 
