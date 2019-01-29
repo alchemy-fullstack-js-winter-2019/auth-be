@@ -6,8 +6,6 @@ const mongoose = require('mongoose');
 const { Types } = require('mongoose');
 const { tokenize, untokenize } = require('../../lib/utils/token');
 
-
-
 describe('User model', () => {
   const testUser = (email, password) => {
     return User.create({
@@ -30,7 +28,7 @@ describe('User model', () => {
     expect(errors.email.message).toEqual('Email required');
   });
 
-  it.only('stores a _tempPassword', () => {
+  it('stores a _tempPassword', () => {
     return testUser('test@email.com', 'pass')
       .then(user => {
         expect(user._tempPassword).toEqual('pass');

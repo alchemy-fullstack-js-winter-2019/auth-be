@@ -23,7 +23,8 @@
   "homepage": "https://github.com/cruzayye/auth-be#readme",
   "devDependencies": {
     "eslint": "^5.12.1",
-    "jest": "^23.6.0"
+    "jest": "^23.6.0",
+    "supertest": "^3.4.2"
   },
   "dependencies": {
     "bcrypt": "^3.0.3",
