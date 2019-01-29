@@ -43,23 +43,23 @@ describe('app', () => {
         });
       });
   });
-  it('can sign in', ( => {
+  it('can sign in', () => {
     return createUser('jei@mail.com')
       .then(() => {
         return request(app)
           .post('/auth/signin')
           .send({ 
             email: 'jei@email.com', password: 'password'
-        })
-        .then(res => {
+          })
+          .then(res => {
             expect(res.body).toEqual({
-                user: {
-                    _id: expect.any(String),
-                    email: 'jei@email.com',
-                },
-                token: expect.any(String)
+              user: {
+                _id: expect.any(String),
+                email: 'jei@email.com',
+              },
+              token: expect.any(String)
             });
-        });
+          });
       });
   });
 
