@@ -105,4 +105,8 @@ describe('user model', () => {
         expect(token).toEqual(expect.any(String));
       });
   });
+
+  afterAll((done) => {
+    mongoose.disconnect(done);
+  });
 });
