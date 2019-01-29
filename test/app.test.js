@@ -7,7 +7,6 @@ describe('ensureAuth', () => {
     };
 
     const next = jest.fn();
-
     bearerToken(req, {}, next);
 
     expect(req.token).toEqual('abcd1234');
