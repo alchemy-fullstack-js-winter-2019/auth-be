@@ -4,7 +4,6 @@ require('dotenv').config();
 require('../../lib/utils/connect')();
 const { tokenize } = require('../../lib/utils/token');
 
-
 describe('user model', () => {
   beforeEach(done => {
     mongoose.connection.dropDatabase(done);
@@ -55,7 +54,6 @@ describe('user model', () => {
         expect(user.passwordHash).toEqual(expect.any(String));
         expect(user.password).toBeUndefined();
       });
-
   });
 
   it('returns true when clear text password matches the password hash', () => {
