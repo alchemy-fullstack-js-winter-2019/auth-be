@@ -3,6 +3,7 @@ const connect = require('../../lib/utils/connect');
 const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../../lib/app');
+const User = require('../../lib/models/User');
 
 const createUser = (email) => {
     return request(app)
@@ -50,16 +51,37 @@ describe('does auth', () => {
                     .post('/auth/signin')
                     .send({ 
                         email: 'silly@email.com', password: 'password'
-                    })
-                    .then(res => {
-                        expect(res.body).toEqual({
-                            user: {
-                                _id: expect.any(String),
-                                email: 'silly@email.com',
-                            },
-                            token: expect.any(String)
-                        });
                     });
+            })
+            .then(res => {
+                expect(res.body).toEqual({
+                    user: {
+                        _id: expect.any(String),
+                        email: 'silly@email.com',
+                    },
+                    token: expect.any(String)
+                });
+            });
+    });
+    it('has a /verify route', () => {
+        return User.create({ email: 'test@test.com', password: 'password' })
+            .then(() => {
+                return request(app)
+                    .post('/auth/signin')
+                    .send({ 
+                        email: 'test@test.com', password: 'password'
+                    });
+            })
+            .then(({ body }) => {
+                return request(app)
+                    .get('/auth/verify')
+                    .set('Authorization', `Bearer ${body.token}`);
+            })
+            .then(res => {
+                expect(res.body).toEqual({ 
+                    email: 'test@test.com',
+                    _id: expect.any(String)
+                });
             });
     });
 
