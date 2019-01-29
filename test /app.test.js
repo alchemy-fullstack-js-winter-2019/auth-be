@@ -1,6 +1,6 @@
 require('dotenv').config();
 const connect = require('../lib/utils/connect');
-const user = require('../lib/models/User');
+const User = require('../lib/models/User');
 const request = require('supertest');
 const mongoose = require('moongoose');
 
@@ -34,16 +34,18 @@ describe('app', () => {
   });
   it('can signin a user', () => {
     
-    user.create({
+    return User.create({
       email:'test@test.com',
       password:'password'
 
-    });
-    return request(app)
-      .post('auth/signin')
-      .send({
-        email: 'test@test.com',
-        password:'password'
+    })
+      .then(() => {
+        return request(app)
+          .post('auth/signin')
+          .send({
+            email: 'test@test.com',
+            password:'password'
+          });
       })
       .then(res => {
         expect(res.body).toEqual({
@@ -55,4 +57,6 @@ describe('app', () => {
         });
       });
   });
+  
 });
+
