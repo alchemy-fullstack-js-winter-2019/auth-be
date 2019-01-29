@@ -1,34 +1,38 @@
 require('dotenv').config();
 const connect = require('../lib/utils/connect');
 
-const request = require ('supertest');
-const mongoose = require ('mongoose');
-const Tweet = require('../lib/models/Tweet');
-const User = require('../lib/models/User');
+const request = require('supertest');
+const mongoose = require('mongoose');
+
+const app = require('../lib/app');
 
 describe('app', () => {
-
-  const createUser = (handle, name, email) => {
-    return User.create({ handle, name, email })
-      .then(user => ({ ...user, _id: user._id.toString() }));
-  };
-
-  const createTweet = ((handle, text = 'my first tweet') => {
-    return createUser(handle, 'abel', 'abel.j.quintero@gmail.com')
-      .then(user => {
-        return Tweet.create({ handle: user._id, text })
-          .then(tweet => ({ ...tweet, _id: tweet._id.toString() }));
-      });
+  beforeAll(() => {
+    connect();
   });
 
   beforeEach(done => {
     mongoose.connection.dropDatabase(done);
   });
 
-  it.only('can sign up a user', () => {
+  afterAll(done => {
+    mongoose.connection.close(done);
+  });
+
+  it('can sign up a user', () => {
     return request(app)
       .post('/auth/signup')
-      .send({ email: 'banana@test.com', password: 'password' })
-      .
+      .send({ email: 'abel.j.quintero@gmail.com', password: 'password' })
+      .then(res => {
+        expect(res.body).toEqual({
+          user: {
+            _id: expect.any(String),
+            email: 'abel.j.quintero@gmail.com'
+          },
+          token: expect.any(String)
+        });
+      });
   });
 });
+
+
