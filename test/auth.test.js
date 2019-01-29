@@ -4,6 +4,16 @@ const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../lib/app');
 
+const createUser = (email) => {
+  return request(app)
+    .post('/auth/signup')
+    .send({
+      email: email,
+      password: 'roxy1'
+    })
+    .then(res => res.body);
+};
+
 describe('auth routes', () => {
   beforeEach(done => {
     return mongoose.connection.dropDatabase(() => {
@@ -19,7 +29,6 @@ describe('auth routes', () => {
         password: 'roxy1'
       })
       .then(res => {
-        console.log('body', res.body);
         expect(res.body).toEqual({
           user: {
             email: 'kristinhortsch@gmail.com',
@@ -27,6 +36,27 @@ describe('auth routes', () => {
           },
           token: expect.any(String)
         });
+      });
+  });
+
+  it('can sign in', () => {
+    return createUser('kristinhortsch@gmail.com')
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email: 'kristinhortsch@gmail.com',
+            password: 'roxy1'
+          })
+          .then(res => {
+            expect(res.body).toEqual({
+              user: {
+                email: 'kristinhortsch@gmail.com',
+                _id: expect.any(String)
+              },
+              token: expect.any(String)
+            });
+          });
       });
   });
 
