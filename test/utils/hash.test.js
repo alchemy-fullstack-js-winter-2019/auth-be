@@ -79,6 +79,7 @@ describe('hashing functions', () => {
       return compare('basPassword', hashedPassword)
     })
       .then(result => {
+        expect(result).toBeFalsy();
       })
   })
 });
