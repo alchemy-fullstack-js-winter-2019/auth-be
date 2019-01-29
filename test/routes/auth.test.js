@@ -57,4 +57,28 @@ describe('auth test', () => {
       });
   });
 
+  it('cannot sign in an existing user with bad password', () => {
+    return createUser({ password: 'password' })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({ email: 'schnepherd@gmail.com', password: 'badpassword' })
+          .then(res => {
+            expect(res.status).toEqual(401);
+          });
+      });
+  });
+
+  it('cannot sign in if user not found', () => {
+    return createUser({ password: 'password' })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({ email: 'notfound@gmail.com', password: 'badpassword' })
+          .then(res => {
+            expect(res.status).toEqual(401);
+          });
+      });
+  });
+
 });
