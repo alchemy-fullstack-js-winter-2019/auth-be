@@ -60,6 +60,23 @@ describe('app', () => {
       });
   });
 
+  it('can not sign in with a bad email or password', () => {
+    return User.create({
+      email: 'badEmail@test.com',
+      password: 'password'
+    })
+      .then(() => {
+        return request(app)
+          .send({
+            email: 'badEmail@test.com',
+            password: 'password'
+          });
+      })
+      .then(res => {
+        expect(res.status).toEqual(401);
+      });
+  });
+
 
 });
 
