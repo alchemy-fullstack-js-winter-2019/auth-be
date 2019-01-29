@@ -1,8 +1,9 @@
 require('dotenv').config();
+const mongoose = require('mongoose');
 require('../../lib/utils/connect')();
 const User = require('../../lib/models/User');
 const { Types, connection } = require('mongoose');
-const { tokenize } = require('../../lib/utils/token');
+const { tokenize, untokenize } = require('../../lib/utils/token');
  
 
 
@@ -57,7 +58,7 @@ describe('Users ', () => {
         expect(user.password).toBeUndefined();
       });
   });
-  it('can compare methodone passwords aka good passwords', () => { 
+  it('can compare passwords aka good passwords', () => { 
     return User.create({
       email: 'test@test.com', 
       password: 'p455w0rd'  
@@ -70,7 +71,7 @@ describe('Users ', () => {
         expect(result).toBeTruthy();
       });
   });
-  it('can compare methodtwo passwords aka bad passwords', () => { 
+  it('can compare passwords aka bad passwords', () => { 
     return User.create({
       email: 'test@test.com', 
       password: 'p455w0rd'  
@@ -112,5 +113,8 @@ describe('Users ', () => {
           _id: expect.any(String)
         });
       });
+  });
+  afterAll((done) => {
+    mongoose.disconnect(done);
   });
 });
