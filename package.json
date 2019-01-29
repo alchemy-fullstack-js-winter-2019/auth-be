@@ -10,6 +10,9 @@
     "test": "jest",
     "test:watch": "jest --watch --runInBand"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kristinhortsch/auth-be.git"
@@ -31,6 +34,7 @@
     "express": "^4.16.4",
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.4.6",
+    "nodemon": "^1.18.9",
     "superagent": "^4.1.0"
   }
 }
