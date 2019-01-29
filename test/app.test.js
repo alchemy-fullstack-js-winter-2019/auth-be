@@ -5,17 +5,13 @@ const request = require('supertest');
 const User = require('../lib/models/User');
 const app = require('../lib/app');
 
-
-
 describe('app', () => {
   beforeAll(() => {
     connect();
   });
 
   beforeEach(done => {
-    return mongoose.connection.dropDatabase(() => {
-      done();
-    });
+    mongoose.connection.dropDatabase(done);
   });
 
   afterAll(done => {
@@ -49,8 +45,8 @@ describe('app', () => {
       .then(res => {
         expect(res.body).toEqual({
           user: {
-            _id: expect.any(String),
             email: 'test@test.com',
+            _id: expect.any(String)
           },
           token: expect.any(String)
         });
@@ -93,10 +89,10 @@ describe('app', () => {
   });
   it('has a /verify route', () => {
     return User.create({ email: 'test@test.com', password: 'password' })
-      .then(user => {
+      .then(() => {
         return request(app)
           .post('/auth/signin')
-          .send({ email: 'test@test.com', password: password }))
+          .send({ email: 'test@test.com', password: 'password' })
           .then(res => res.body.token);
       })
       .then(token => {
