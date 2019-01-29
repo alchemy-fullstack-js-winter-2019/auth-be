@@ -1,9 +1,10 @@
 require('dotenv').config();
-require('../../lib/routes/auth');
-const app = require('../../lib/app');
+require('../../lib/utils/connect')();
+
 const mongoose = require('mongoose');
 const request = require('supertest');
 
+const app = require('../../lib/app');
 
 describe('auth test', () => {
 
@@ -15,15 +16,18 @@ describe('auth test', () => {
 
   it('sign up a new user', () => {
     return request(app)
-      .post('/signup')
+      .post('/auth/signup')
       .send({ 
         email: 'newUser@test.com',
         password: 'password'
       })
       .then(res => {
         expect(res.body).toEqual({
-          email: 'newUser@test.com',
-          _id: expect.any(String)
+          user: {
+            email: 'newUser@test.com',
+            _id: expect.any(String)
+          },
+          token: expect.any(String),
         });
       });
   });
