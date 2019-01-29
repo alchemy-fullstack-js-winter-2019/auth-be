@@ -4,6 +4,7 @@ require('../lib/utils/connect')();
 const request = require('supertest');
 const mongoose = require('mongoose');
 const app = require('../lib/app');
+const User = require('../lib/models/User');
 
 const createUser = email => {
   return request(app)
@@ -21,6 +22,7 @@ describe('auth', () => {
       done();
     });
   });
+
   afterAll(done => {
     mongoose.connection.close(done);
   });
@@ -39,6 +41,7 @@ describe('auth', () => {
         });
       });
   });
+
   it('can sign in a user', () => {
     return createUser('test@test.com')
       .then(() => {
@@ -57,6 +60,7 @@ describe('auth', () => {
 
       });
   });
+
   it('cannot signin a user with a bad passwrod', () => {
     return createUser('test@test.com')
       .then(() => {
@@ -67,6 +71,27 @@ describe('auth', () => {
             expect(res.status).toEqual(401);
           });
 
+      });
+  });
+
+  it('has as /verify route', () => {
+    return User.create({ email: 'teonna@heintz.com', password: 'Robert34980' })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({ email: 'teonna@heintz.com', password: 'Robert34980' })
+          .then(res => res.body.token);  
+      })
+      .then(token => {
+        return request(app)
+          .get('/auth/verify')
+          .set('Authorization', `Bearer ${token}`);
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          email: 'teonna@heintz.com', 
+          _id: expect.any(String)
+        });
       });
   });
 });
