@@ -66,11 +66,11 @@ describe('app', () => {
         return request(app)
           .post('/auth/signin')
           .send({ email: 'test@test.com', password: 'passit' })
-          .then(() => {
+          .then(res => {
             return request(app)
               .get('/auth/verify')
-              .set('Authorization', 'blah')
-              .then(auth => expect(auth.body).toEqual({ token: expect.any(String) }));
+              .set('Authorization', `Bearer ${res.body.token}`)
+              .then(auth => expect(auth.body.token).toEqual(res.body.token));
           });
       });
   });
