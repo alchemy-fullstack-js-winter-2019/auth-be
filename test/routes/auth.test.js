@@ -76,21 +76,19 @@ describe.only('auth', () => {
         return request(app)
           .post('/auth/signin')
           .send({ email: 'yo@yo.com', password: 'pass' })
-          .then(({ body }) => {
-            return request(app)
-              .get('/auth/verify')
-              .set('Authorization', `Bearer ${body.token}`);
-          }).then(res => {
-            expect(res.body).toEqual({
-              email: 'yo@yo.com',
-              _id: expect.any(String)
-            });
-          });
+          .then(res => res.body.token);
+      }).then(token => {
+        return request(app)
+          .get('/auth/verify')
+          .set('Authorization', `Bearer ${token}`);
+      }).then(res => {
+        expect(res.body).toEqual({
+          email: 'yo@yo.com',
+          _id: expect.any(String)
+        });
       });
   });
-  
   afterAll((done) => {
     mongoose.disconnect(done);
   }); 
 });
-
