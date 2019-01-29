@@ -2,21 +2,14 @@ require('dotenv').config();
 const connect = require('../lib/utils/connect');
 const mongoose = require('mongoose');
 const request = require('supertest');
+const User = require('../lib/models/User');
 const app = require('../lib/app');
 
-const createUser = (email) => {
-  return request(app)
-    .post('/auth/signup')
-    .send({ 
-      email: email, 
-      password: 'password'
-    })
-    .then(res => res.body);
-};
+
 
 describe('app', () => {
   beforeAll(() => {
-    return connect();
+    connect();
   });
 
   beforeEach(done => {
@@ -43,26 +36,76 @@ describe('app', () => {
         });
       });
   });
-  it('can sign in', () => {
-    return createUser('jei@mail.com')
+
+  it('can sign in user', () => {
+    return User.create({ email:'test@test.com', password: 'password' })
       .then(() => {
         return request(app)
           .post('/auth/signin')
           .send({ 
-            email: 'jei@email.com', password: 'password'
-          })
-          .then(res => {
-            expect(res.body).toEqual({
-              user: {
-                _id: expect.any(String),
-                email: 'jei@email.com',
-              },
-              token: expect.any(String)
-            });
+            email: 'test@test.com', password: 'password'
           });
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          user: {
+            _id: expect.any(String),
+            email: 'test@test.com',
+          },
+          token: expect.any(String)
+        });
       });
   });
 
+  it('can not /signin a user with bad password', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email: 'test@test.com',
+            password: 'badPassword'
+          });
+      })
+      .then(res => {
+        expect(res.status).toEqual(401);
+      });
+  });
+  it('can not /signin a user with bad email', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email: 'badEmail@test.com',
+            password: 'password'
+          });
+      })
+      .then(res => {
+        expect(res.status).toEqual(401);
+      });
+  });
+  it('has a /verify route', () => {
+    return User.create({ email: 'test@test.com', password: 'password' })
+      .then(user => { 
+      })
+      .then(token => {
+
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          user: {
+            _id: expect.any(String),
+            email: 'test@test.com',
+          },
+          token: expect.any(String)
+        });
+      });
+  });
 });
-
-
