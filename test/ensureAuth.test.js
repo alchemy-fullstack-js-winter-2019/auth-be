@@ -27,10 +27,8 @@ describe('ensureAuth', () => {
     
     ensureAuth(req, {}, next)
       .then(() => {
-        expect(req.user).toContain({ email: 'kristinhortsch@gmail.com', password: 'password' });
+        expect(req.user).toEqual({ email: 'kristinhortsch@gmail.com', password: 'password' });
         expect(next).toHaveBeenCalled();
-
       });
-    
   });
 });
