@@ -15,4 +15,8 @@ describe('ensureAuth', () => {
     expect(next).toHaveBeenCalled();
   });
 
+  it('can ensure an auth', () => {
+
+  });
+
 });

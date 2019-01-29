@@ -7,6 +7,16 @@ const bearerToken = (req, res, next) => {
   next();
 };
 
+
+const ensureAuth = (req, res, next) => {
+  const token = req
+    
+
+  req.token = token;
+  next();
+};
+
 module.exports = {
-  bearerToken
+  bearerToken,
+  ensureAuth
 };
