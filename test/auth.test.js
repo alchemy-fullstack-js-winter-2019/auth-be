@@ -39,7 +39,7 @@ describe('auth', () => {
         });
       });
   });
-  it.only('can sign in a user', () => {
+  it('can sign in a user', () => {
     return createUser('test@test.com')
       .then(() => {
         return request(app)
@@ -53,6 +53,18 @@ describe('auth', () => {
               },
               token: expect.any(String)
             });
+          });
+
+      });
+  });
+  it('cannot signin a user with a bad passwrod', () => {
+    return createUser('test@test.com')
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({ email: 'test@test.com', password: 'badpassword' })
+          .then(res => {
+            expect(res.status).toEqual(401);
           });
 
       });
