@@ -37,10 +37,10 @@ describe('models', () => {
       email: 'test@test.com',
       password: 'p455w0rd',
     })
-    .then(user => {
-      expect(user.passwordHash).toEqual(expect.any(String));
-      expect(user.password).toBeUndefined();
-    });
+      .then(user => {
+        expect(user.passwordHash).toEqual(expect.any(String));
+        expect(user.password).toBeUndefined();
+      });
   });
   it('can compare good passwords', () => {
     //create a new user
@@ -49,12 +49,12 @@ describe('models', () => {
       password: 'p455w0rd'
     })
     //compare passwords
-    .then(user => {
-      return user.compare('p455w0rd'); //way of telling user passed in the correct password
-    })
-    .then(result => {
-      expect(result).toBeTruthy();
-    });
+      .then(user => {
+        return user.compare('p455w0rd'); //way of telling user passed in the correct password
+      })
+      .then(result => {
+        expect(result).toBeTruthy();
+      });
   });
 
   it('can compare bad passwords', () => {
@@ -62,12 +62,12 @@ describe('models', () => {
       email: 'test@test.com',
       password: 'p455w0rd'
     })
-    .then(user => {
-      return user.compare('badPassword'); //user inputs password and it does not match records
-    })
-    .then(result => {
-      expect(result).toBeFalsy();
-    });
+      .then(user => {
+        return user.compare('badPassword'); //user inputs password and it does not match records
+      })
+      .then(result => {
+        expect(result).toBeFalsy();
+      });
   });
 
   it('can find a user token', () => { //give it a token and gives us a user back
@@ -77,8 +77,8 @@ describe('models', () => {
       password: 'p455w0rd'
     })
       .then(user => {
-        const token = tokenize(user);
-        return User.findByToken(token)
+        const token = tokenize(user); //create a token for user
+        return User.findByToken(token); //find user by token
       })
       
     //  .then(user => { //create a token out of that user
@@ -88,23 +88,23 @@ describe('models', () => {
     //    //-> then findByToken(token)
     //  })
       .then(userFromToken => { //expect to find a user out of that tokenresult is everything that the created user has
-       expect(userFromToken).toEqual({
-         email: 'test@test.com',
-        //  passwordHash: expect.any(String),
-         _id: expect.any(String),
+        expect(userFromToken).toEqual({
+          email: 'test@test.com',
+          //  passwordHash: expect.any(String),
+          _id: expect.any(String), //find user by token and get user back
         //  __v: 0
-       });
-     });
+        });
+      });
   });
   it('can create an authToken', () => {
     return User.create({ //1st create user
       email: 'weigh@yahoo.com',
       password: 'pse95'
     })
-    .then(user => user.authToken())  //after we have a user we want to
-    .then(token => {
-      expect(token).toEqual(expect.any(String));
-    });
+      .then(user => user.authToken())  //after we have a user we want to
+      .then(token => {
+        expect(token).toEqual(expect.any(String));
+      });
   }); 
 });
 

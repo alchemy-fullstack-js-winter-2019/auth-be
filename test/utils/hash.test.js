@@ -4,19 +4,19 @@ const { hash, compare } = require('../../lib/utils/hash');
 describe('hassing functions', () => {
   it('hashes a password', () => {
     return bcrypt.hash('password', 10) //run the packet imported and added salt runs function 10 times to generate random number
-    .then(hashedPassword => { //we are expecting a response of hashedPassword
-      expect(hashedPassword).toBeDefined(); //.toBeEqual('')empty string to be able to read the password
-    })
+      .then(hashedPassword => { //we are expecting a response of hashedPassword
+        expect(hashedPassword).toBeDefined(); //.toBeEqual('')empty string to be able to read the password
+      });
   });
 
   it('creates hashed passwords that are different', () => {
     return bcrypt.hash('password', 10) 
-    .then(hashedPassword1 => { //can use a promise.all to make this nicer
-      return bcrypt.hash('password', 10)
-      .then(hashedPassword2 => {
-        expect(hashedPassword1).not.toEqual(hashedPassword2);
-    });
-    });
+      .then(hashedPassword1 => { //can use a promise.all to make this nicer
+        return bcrypt.hash('password', 10)
+          .then(hashedPassword2 => {
+            expect(hashedPassword1).not.toEqual(hashedPassword2);
+          });
+      });
   });
   // it('creates the same hash given the same salt', () => {
   //   return bcrypt.hash('password', '$2b$04$1236567850098765432123')
@@ -40,19 +40,19 @@ describe('hassing functions', () => {
         ]);
       })
       .then(([hash1, hash2]) => {
-        expect(hash1).toEqual(hash1) //same has because of the same salg
+        expect(hash1).toEqual(hash1); //same has because of the same salg
       });
   });
   it('can compare hashes basedon on the same password', () => {
     const password = 'password'; 
 
-     return bcrypt.hash('password', 10) //return has from 
-       .then(hashedPassword => {
-          return bcrypt.compare(password, hashedPassword); 
-       })
-       .then(result => { //pass result 
-         expect(result).toBeTruthy();
-       });
+    return bcrypt.hash('password', 10) //return has from 
+      .then(hashedPassword => {
+        return bcrypt.compare(password, hashedPassword); 
+      })
+      .then(result => { //pass result 
+        expect(result).toBeTruthy();
+      });
     //   .then(result => {
     //     expect(result).toBeTruthy()
     //   })
@@ -87,12 +87,12 @@ describe('hassing functions', () => {
   });
 
   it('can compare a bad password and string', () => {
-    return hash('password') //return the has 
+    return hash('password') //this is hasing a password 
       .then(hashedPassword => { //take hashpassword
         return compare('badpassword', hashedPassword);
       })
       .then(result => { //then then result should befalse
-        expect(result).toBeFalsy();
-      })
-  })
+        expect(result).toBeFalsy(); //expecting the result 
+      });
+  });
 });
