@@ -94,4 +94,29 @@ describe('app', () => {
         expect(res.status).toEqual(401);
       });
   });
+
+  it('has a /verify route', () => {
+    User.create({ email: 'test@test.com', password: 'password' })
+      .then(user => {
+        // login user and get token
+        return request(app)
+          .post('/auth/signin')
+          .send({ email: 'test@test.com', password: 'password' })
+          .then(res => res.body.token);
+      })
+      .then(token => {
+        // request /verify and present token
+        // use .set('Authorization', `Bearer ${token}`)
+        return request(app)
+          .get('/auth/verify')
+          .set('Authorization', `Bearer ${token}`);
+      })
+      .then(res => {
+        //expect res.body to be a user
+        expect(res.body).toEqual({
+          email: 'test@test.com',
+          _id: expect.any(String)
+        });
+      });
+  });
 });
