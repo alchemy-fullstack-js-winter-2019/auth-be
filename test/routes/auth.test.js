@@ -69,6 +69,7 @@ describe('auth route', () => {
             });
           });
       })
+      // eslint-disable-next-line no-console
       .catch(console.log);
   });
 
