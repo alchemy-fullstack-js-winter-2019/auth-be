@@ -14,8 +14,13 @@ describe('ensureAuth', () => {
     expect(next).toHaveBeenCalled();
   });
 
-  it('can ensure authorization of token', () => {
-    const user = findAuthToken(user)
-      .then(req.user = user);
+  it('can ensure an auth', () => {
+    const req = {
+      get: () => 'abcd1234'
+    };
+    const next = jest.fn();
+    ensureAuth(req, {}, next);
+    expect(req.token).toEqual('abcd1234');
+    expect(next).toHaveBeenCalled();
   });
 });
