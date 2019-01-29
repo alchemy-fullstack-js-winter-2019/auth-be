@@ -19,6 +19,20 @@ describe('user tests', () => {
         });
       });
   });
+  it('signs in a user', () => {
+    return request(app)
+      .post('/auth/signin')
+      .send({ email: 'tyler@gmail.com', password: 'abc123' })
+      .then(res => {
+        expect(res.body).toEqual({
+          user:{
+            email: 'tyler@gmail.com',
+            _id: expect.any(String)
+          },
+          token: expect.any(String)
+        });
+      });
+  });
 });
 
 
