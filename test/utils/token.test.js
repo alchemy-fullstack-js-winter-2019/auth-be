@@ -11,13 +11,13 @@ const {
 describe('JSON web tokens tests', () => {
 
   it('can create a token', () => {
-    const token = jwt.sign({ payload: { hi: 'there' } }, 'secret');
+    const token = jwt.sign({ payload: { hi: 'there' } }, process.env.AUTH_SECRET);
     expect(token).toEqual(expect.any(String));
   });
 
   it('can verify a token', () => {
-    const token = jwt.sign({ payload: { hi: 'there' } }, 'secret');
-    const body = jwt.verify(token, 'secret');
+    const token = jwt.sign({ payload: { hi: 'there' } }, process.env.AUTH_SECRET);
+    const body = jwt.verify(token, process.env.AUTH_SECRET);
     expect(body).toEqual({ 
       payload: { hi: 'there' }, 
       iat: expect.any(Number) 
@@ -26,8 +26,8 @@ describe('JSON web tokens tests', () => {
   });
 
   it('can verify a token with expiration', () => {
-    const token = jwt.sign({ payload: { hi: 'there' } }, 'secret', { expiresIn: '1h' });
-    const body = jwt.verify(token, 'secret');
+    const token = jwt.sign({ payload: { hi: 'there' } }, process.env.AUTH_SECRET, { expiresIn: '1h' });
+    const body = jwt.verify(token, process.env.AUTH_SECRET);
     expect(body).toEqual({ 
       payload: { hi: 'there' }, 
       iat: expect.any(Number), 
@@ -41,7 +41,7 @@ describe('JSON web tokens tests', () => {
   });
 
   it('untokenize a token', () => {
-    const token = jwt.sign({ payload: { hi: 'there' } }, 'secret', { expiresIn: '1h' });
+    const token = jwt.sign({ payload: { hi: 'there' } }, process.env.AUTH_SECRET, { expiresIn: '1h' });
     const payload = untokenize(token);
     expect(payload).toEqual({ hi: 'there' });
   });
