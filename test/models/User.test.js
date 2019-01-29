@@ -5,7 +5,7 @@ const { Types } = require('mongoose');
 const User = require('../../lib/models/User');
 const { tokenize, untokenize } = require('../../lib/utils/token');
 
-describe.skip('User model', () => {
+describe('User model', () => {
   beforeEach(done => mongoose.connection.dropDatabase(done));
 
   afterAll(() => mongoose.disconnect());
