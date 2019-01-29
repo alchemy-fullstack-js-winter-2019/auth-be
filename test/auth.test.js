@@ -60,6 +60,36 @@ describe('auth routes', () => {
       });
   });
 
+  it('can fail with a bad password', () => {
+    return createUser('kristinhortsch@gmail.com')
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email: 'kristinhortsch@gmail.com',
+            password: 'roxy2'
+          })
+          .then(res => {
+            expect(res.status).toEqual(401);
+          });
+      });
+  });
+
+  it('can fail with a bad email', () => {
+    return createUser('kristinhortsch@gmail.com')
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email: 'bademail@gmail.com',
+            password: 'roxy1'
+          })
+          .then(res => {
+            expect(res.status).toEqual(500);
+          });
+      });
+  });
+
 
 
   afterAll((done) => {

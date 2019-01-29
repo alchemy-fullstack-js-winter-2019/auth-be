@@ -12,4 +12,17 @@ describe('ensureAuth', () => {
     expect(req.token).toEqual('abcd1234');
     expect(next).toHaveBeenCalled();
   });
+
+  it('can ensure Auth', () => {
+    const req = {
+      get: () => 'token'
+    };
+
+    const next = jest.fn();
+
+    ensureAuth(req, {}, next);
+
+    expect(req.user).toBeTruthy();
+    expect(next).toHaveBeenCalled();
+  });
 });
