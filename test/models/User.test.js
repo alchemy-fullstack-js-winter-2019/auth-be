@@ -3,7 +3,7 @@ require('../../lib/utils/connect')();
 const mongoose = require('mongoose');
 const { Types } = require('mongoose');
 const User = require('../../lib/models/User');
-const { tokenize } = require('../../lib/utils/token');
+const { tokenize, untokenize } = require('../../lib/utils/token');
 
 describe('User model', () => {
 
@@ -13,17 +13,20 @@ describe('User model', () => {
 
   it.only('validates a good model', () => {
     const user = new user({ email: 'test@test.com' });
-    expect(user.JSON).toEqual({ email: 'test@test.com', _id: expect.any(Object) });
+    expect(user.JSON()).toEqual({ email: 'test@test.com', _id: expect.any(Types.ObjectId) });
   });
 
   it('has a required email', () => {
     const user = new User({});
-    const errors = user.validateSync();
-    expect(errors.email.message).toEqual('');
+    const errors = user.validateSync().errors;
+    expect(errors.email.message).toEqual('Email required');
   });
 
   it('stores an _tempPassword', () => {
-    const user = new User({ email: 'test@test.com', password: 'PassWord' });
+    const user = new User({
+      email: 'test@test.com',
+      password: 'PassWord'
+    });
     expect(user._tempPassword).toEqual('PassWord');
   });
 
@@ -57,7 +60,7 @@ describe('User model', () => {
       password: 'PassWord'
     })
       .then(user => {
-        user.compare('badPassWord');
+        return user.compare('badPassWord');
       })
       .then(result => {
         expect(result).toBeFalsy();
@@ -84,7 +87,14 @@ describe('User model', () => {
       email: 'test@test.com',
       password: 'password'
     })
-    
-    })
+      .then(user => user.authToken())
+      .then(untokenize)
+      .then(user => {
+        expect(user).toEqual({
+          email: 'test@test.com',
+          _id: expect.any(String)
+        });
+      });
   });
+
 });
