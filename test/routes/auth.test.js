@@ -4,15 +4,13 @@ const User = require('../../lib/models/User');
 const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../../lib/app');
-// const {
-//   tokenize,
-//   untokenize
-// } = require('../../lib/utils/token');
+
 
 // const createUser = (email, password) => {
 //   return request(app)
 //     .post('/auth/signup')
-
+//     .send({ email, password })
+//     .then(res => res.body);
 // };
 
 
@@ -82,6 +80,25 @@ describe('auth route', () => {
         return request(app)
           .post('/auth/signin')
           .send({ email: user.email, password: 'bad' })
+          .then(res => {
+            expect(res.statusCode).toEqual(401);
+            expect(res.body).toEqual({
+              error: 'Bad email or password'
+            });
+            done();
+          });
+      });
+  });
+
+  it('can respond with message if bad email', done => {
+    return User.create({
+      email: 'b@b.com',
+      password: 'booboo'
+    })
+      .then(user => {
+        return request(app)
+          .post('/auth/signin')
+          .send({ email: 'k@k.com', password: user.password })
           .then(res => {
             expect(res.statusCode).toEqual(401);
             expect(res.body).toEqual({
