@@ -78,7 +78,24 @@ describe('app', () => {
           });
       })
       .then(res => {
-        expect(rec.status).toEqual(401);
+        expect(res.status).toEqual(401);
+      });
+  });
+  it('can not /signin a user with bad email', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email: 'badEmail@test.com',
+            password: 'password'
+          });
+      })
+      .then(res => {
+        expect(res.status).toEqual(401);
       });
   });
 
