@@ -57,4 +57,38 @@ describe('app', () => {
         });
       });
   });
+  it('can not /signin a user with bad password', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email: 'test@test.com',
+            password: 'badPassword'
+          });
+      })
+      .then(res => {
+        expect(res.status).toEqual(401);
+      });
+  });
+  it('can not /signin a user with bad email', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email: 'fds@test.com',
+            password: 'password'
+          });
+      })
+      .then(res => {
+        expect(res.status).toEqual(401);
+      });
+  });
 });
