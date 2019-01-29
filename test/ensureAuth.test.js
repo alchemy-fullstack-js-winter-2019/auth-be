@@ -17,7 +17,7 @@ describe('ensureAuth', () => {
     expect(next).toHaveBeenCalled();
   });
 
-  it.only('can ensure auth', () => {
+  it('can ensure auth', () => {
     // use tokenize to create a token
     const token = tokenize({ email: 'user@email.com' });
 
