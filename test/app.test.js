@@ -54,7 +54,23 @@ describe('app', () => {
           .send({ email: 'est@test.com', password: 'dontpassit' })
           .then(res => {
             expect(res.status).toEqual(401);
-            expect(res.text).toEqual('Bad email or password');
+            expect(res.body.error).toEqual('Bad email or password');
+          });
+      });
+  });
+
+  it('verifies token', () => {
+    return User
+      .create({ email: 'test@test.com', password: 'passit' })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({ email: 'test@test.com', password: 'passit' })
+          .then(() => {
+            return request(app)
+              .get('/auth/verify')
+              .set('Authorization', 'blah')
+              .then(auth => expect(auth.body).toEqual({ token: expect.any(String) }));
           });
       });
   });
