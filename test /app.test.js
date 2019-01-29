@@ -3,7 +3,7 @@ const connect = require('../lib/utils/connect');
 const User = require('../lib/models/User');
 const request = require('supertest');
 const mongoose = require('mongoose');
-const User = require('../lib/models/User');
+
 
 const app = require('../lib/app');
 
@@ -12,13 +12,18 @@ describe('app', () => {
   beforeAll(() => {
     connect();
   });
+
   beforeEach(done => {
     mongoose.connection.dropDatabase(done);
   });
 
+  afterAll(done => {
+    mongoose.connection.close(done);
+  });
+  
   it('can signup a user', () => {
     return request(app)
-      .post('auth/signup')
+      .post('/auth/signup')
       .send({
         email: 'test@test.com',
         password:'password'
@@ -33,6 +38,7 @@ describe('app', () => {
         });
       });
   });
+ 
   it('can signin a user', () => {
     
     return User.create({
@@ -42,7 +48,7 @@ describe('app', () => {
     })
       .then(() => {
         return request(app)
-          .post('auth/signin')
+          .post('/auth/signin')
           .send({
             email: 'test@test.com',
             password:'password'
@@ -56,6 +62,23 @@ describe('app', () => {
           },
           token: expect.any(String)
         });
+      });
+  });
+  it('cannot signin a user with bad password', () => {
+    return User.create({
+      email:'test@test.com',
+      password:'password'
+    })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email:'test@test.com',
+            password:'badPassword'
+          });
+      })
+      .then(res => {
+        expect(rec.status).toEqual(401);
       });
   });
 
