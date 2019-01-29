@@ -5,14 +5,14 @@ const User = require('../../lib/models/User');
 const app = require('../../lib/app');
 const mongoose = require('mongoose');
 
-describe('auth', () => {
+describe.only('auth', () => {
   beforeEach(done => {
     return mongoose.connection.dropDatabase(() => {
       done();
     });
   });
 
-  it('can signup a new user', () => {
+  it('can signup a new user', done => {
     return request(app)
       .post('/auth/signup')
       .send({ email: 'banana@test.com', password: 'password' })
@@ -24,6 +24,7 @@ describe('auth', () => {
           },
           token: expect.any(String)
         });
+        done();
       });
   });
 
@@ -45,17 +46,19 @@ describe('auth', () => {
       });
   });
 
-  it('can throw an error if at bad signin', () => {
+  it('can throw an error if a bad signin', () => {
     return User.create({ email: 'banana@huh.com', password: 'pass' })
-      .then(() => {
+      .then(user => {
         return request(app)
           .post('/auth/signin')
-          .send({ email: 'banana@huh.com', password: 'p3ss' })
+          .send({ email: user.email, password: 'p3ss' })
           .then(res => {
-            console.log(res.status);
+            console.log('RESULT', res.text);
+            expect(res.statusCode).toEqual(401);
           });
       });
   });
+
   
   afterAll((done) => {
     mongoose.disconnect(done);

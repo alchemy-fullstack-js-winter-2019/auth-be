@@ -33,6 +33,7 @@
     "dotenv": "^6.2.0",
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.4.6",
+    "morgan": "^1.9.1",
     "superagent": "^4.1.0"
   }
 }
