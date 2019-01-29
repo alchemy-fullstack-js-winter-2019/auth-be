@@ -2,8 +2,8 @@ require('dotenv').config();
 require('../../lib/utils/connect')();
 const mongoose = require('mongoose');
 const { Types } = require('mongoose');
-const { tokenize, untokenize } = require('../../lib/utils/token');
 const User = require('../../lib/models/User');
+const { tokenize, untokenize } = require('../../lib/utils/token');
 
 describe('User model', () => {
   beforeEach(done => {
@@ -51,9 +51,7 @@ describe('User model', () => {
       .then(userFromToken => {
         expect(userFromToken).toEqual({
           email: 'test@test.com',
-          passwordHash: expect.any(String),
-          _id: expect.any(String),
-          __v: 0
+          _id: expect.any(String)
         });
       });
   });
@@ -65,7 +63,7 @@ describe('User model', () => {
       .then(user => user.authToken())
       .then(token => untokenize(token))
       .then(token => {
-        expect(token).toEqual(expect.any(String));
+        expect(token).toEqual({ _id: expect.any(String), email: 'test@test.com' });
       });
   });
 });

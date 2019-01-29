@@ -3,6 +3,7 @@ const connect = require('../lib/utils/connect');
 
 const request = require('supertest');
 const mongoose = require('mongoose');
+const User = require('../lib/models/User');
 
 const app = require('../lib/app');
 
@@ -34,6 +35,26 @@ describe('app', () => {
       });
   });
   it('can /signin a user', () => {
-    return request(app)
-      .post('')
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email: 'test@test.com',
+            password: 'password'
+          });
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          user: {
+            email: 'test@test.com',
+            _id: expect.any(String)
+          },
+          token: expect.any(String)
+        });
+      });
+  });
 });
