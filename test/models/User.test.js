@@ -4,6 +4,8 @@ const { Types } = require('mongoose');
 const User = require('../../lib/models/User');
 const { tokenize } = require('../../lib/utils/token');
 const mongoose = require('mongoose');
+// const request = require('supertest');
+// const app = require('../../lib/app');
 
 describe('user test', () => {
     beforeEach(done => {
