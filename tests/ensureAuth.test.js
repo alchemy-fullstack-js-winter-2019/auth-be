@@ -1,4 +1,6 @@
+// eslint-disable-next-line no-unused-vars
 const { bearerToken, ensureAuth } = require('../middleware/ensureAuth');
+const { tokenize } = require('../middleware/ensureAuth');
 
 describe('ensureAuth', () => {
   it('can get a bearer token', () => {
@@ -16,7 +18,20 @@ describe('ensureAuth', () => {
   });
 
   it('can ensure an auth', () => {
+    const token = tokenize({ email: 'test@test.com' });
 
+    const req = {
+      token
+    };
+
+    const next = jest.fn();
+
+    ensureAuth(req, {}, next)
+      .then(() => {
+        expect(req.user).toEqual({ email: 'test@test.com' });
+      });
+    
+  
   });
 
 });
