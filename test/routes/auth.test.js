@@ -1,3 +1,4 @@
+
 require('dotenv').config();
 require('../../lib/utils/connect')();
 const request = require('supertest');
@@ -72,10 +73,10 @@ describe.only('auth', () => {
 
   it('can ensureAuth at /verify', () => {
     return User.create({ email: 'yo@yo.com', password: 'pass' })
-      .then(() => {
+      .then(user => {
         return request(app)
           .post('/auth/signin')
-          .send({ email: 'yo@yo.com', password: 'pass' })
+          .send({ email: user.email, password: 'pass' })
           .then(res => res.body.token);
       }).then(token => {
         return request(app)

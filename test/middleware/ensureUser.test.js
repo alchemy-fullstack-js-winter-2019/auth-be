@@ -2,6 +2,7 @@ require('dotenv').config();
 require('../../lib/utils/connect')();
 const { bearerToken, ensureAuth } = require('../../lib/middleware/ensureUser');
 const { tokenize } = require('../../lib/utils/token');
+const mongoose = require('mongoose');
 
 describe('ensureUser middleware', () => {
   it('can get a bearer token', () => {
@@ -28,4 +29,7 @@ describe('ensureUser middleware', () => {
         expect(next).toHaveBeenCalled();
       });   
   });
+  afterAll((done) => {
+    mongoose.disconnect(done);
+  }); 
 });

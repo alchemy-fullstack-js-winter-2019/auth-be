@@ -6,8 +6,8 @@
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
-    "test": "jest",
-    "test:watch": "npm run test -- --watch",
+    "test": "jest --verbose --runInBand --detectOpenHandles",
+    "test:watch": "jest --watch --verbose --runInBand --detectOpenHandles",
     "start": "nodemon server.js"
   },
   "repository": {
