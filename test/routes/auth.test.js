@@ -73,18 +73,19 @@ describe('auth route', () => {
       .catch(console.log);
   });
 
-  it('can respond with message if bad email or password', done => {
+  it('can respond with message if bad password', done => {
     return User.create({
       email: 'b@b.com',
       password: 'booboo'
     })
-      .then(() => {
+      .then(user => {
         return request(app)
-          .post('/auth/signup')
-          .send({ email: 'bad', password: 'monkey' })
+          .post('/auth/signin')
+          .send({ email: user.email, password: 'bad' })
           .then(res => {
+            expect(res.statusCode).toEqual(401);
             expect(res.body).toEqual({
-              error: 'User validation failed: email: \'bad\' is not a valid email!'
+              error: 'Bad email or password'
             });
             done();
           });
