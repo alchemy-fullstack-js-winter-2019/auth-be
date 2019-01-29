@@ -30,12 +30,6 @@ describe('User model', () => {
   });
 
   it('has a passwordHash', () => {
-    // const user = new User({
-    //   email: 'test@test.com',
-    //   password: 'p455w0rd'
-    // });
-    // user.save();
-
     return User.create({
       email: 'test@test.com',
       password: 'p455w0rd'
