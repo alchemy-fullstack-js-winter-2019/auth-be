@@ -82,23 +82,31 @@ describe('auth test', () => {
   });
 
   it('has a /verify route', () => {
-    User.create({ email: 'test@test.com', password: 'password' })
-      .then(user => {
+    return User.create({ email: 'test2@test.com', password: 'password' })
+      .then(() => {
         return request(app)
-          .post('/auth/signup')
-          .send({ user });
+          .post('/auth/signin')
+          .send({ email: 'test2@test.com', password: 'password' })
+          .then(res => {
+            return res.body.token;
+          });
       })
       .then(token => {
         return request(app)
           .get('/auth/verify')
-          .send(token)
           .set('Authorization', `Bearer ${token}`);
       })
       .then(res => {
         expect(res.body).toEqual({ 
-          email: 'test@test.com', 
-          password: 'password' });
+          email: 'test2@test.com', 
+          _id: expect.any(String)
+        });
       });
+  });
+
+  afterAll(done => {
+    mongoose.connection.close();
+    done();
   });
 
 });
