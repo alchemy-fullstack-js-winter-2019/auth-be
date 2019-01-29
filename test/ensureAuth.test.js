@@ -1,4 +1,7 @@
+require('dotenv').config();
 const { bearerToken, ensureAuth } = require('../lib/middleware/ensureAuth');
+const { tokenize } = require('../lib/utils/token');
+
 describe('ensureAuth', () => {
   it('can get a bearer token', () => {
     const req = {
@@ -14,15 +17,20 @@ describe('ensureAuth', () => {
   });
 
   it('can ensure Auth', () => {
+    const token = tokenize({ email: 'kristinhortsch@gmail.com', password: 'password' });
+    
     const req = {
-      get: () => 'token'
+      token
     };
-
+    
     const next = jest.fn();
+    
+    ensureAuth(req, {}, next)
+      .then(() => {
+        expect(req.user).toEqual({ email: 'kristinhortsch@gmail.com', password: 'password' });
+        expect(next).toHaveBeenCalled();
 
-    ensureAuth(req, {}, next);
-
-    expect(req.user).toBeTruthy();
-    expect(next).toHaveBeenCalled();
+      });
+    
   });
 });
