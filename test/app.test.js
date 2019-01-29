@@ -44,4 +44,18 @@ describe('app', () => {
           }));
       });
   });
+
+  it('returns error on bad signin', () => {
+    return User
+      .create({ email: 'test@test.com', password: 'passit' })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({ email: 'est@test.com', password: 'dontpassit' })
+          .then(res => {
+            expect(res.status).toEqual(401);
+            expect(res.text).toEqual('Bad email or password');
+          });
+      });
+  });
 });
