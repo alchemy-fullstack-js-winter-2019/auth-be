@@ -93,7 +93,7 @@ describe('User model', () => {
       });
   });
 
-  it(' can create auth token', () => {
+  it('can create auth token', () => {
     return User.create({
       email: 'carmen@email.com', 
       password: 'pa55w0rd'
@@ -107,6 +107,7 @@ describe('User model', () => {
         });
       });        
   });
+
 });
 
 
