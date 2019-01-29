@@ -9,5 +9,4 @@ module.exports = (req, res, next) => {
     } else  {
         next(new HttpError(500, 'Cannot connect to MongoDB'));
     }
-    console.log('eh', req.url);
 };
