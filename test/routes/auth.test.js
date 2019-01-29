@@ -5,14 +5,12 @@ const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../../lib/app');
 
-
 // const createUser = (email, password) => {
 //   return request(app)
 //     .post('/auth/signup')
 //     .send({ email, password })
 //     .then(res => res.body);
 // };
-
 
 describe('auth route', () => {
   beforeEach(done => {
