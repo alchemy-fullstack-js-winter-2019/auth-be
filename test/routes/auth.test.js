@@ -40,11 +40,11 @@ describe('auth test', () => {
   });
 
   it('sign in an existing user', () => {
-    return createUser('password')
-      .then(createdUser => {
+    return createUser({ password: 'password' })
+      .then(() => {
         return request(app)
           .post('/auth/signin')
-          .send(createdUser)
+          .send({ email: 'schnepherd@gmail.com', password: 'password' })
           .then(res => {
             expect(res.body).toEqual({
               user: {
