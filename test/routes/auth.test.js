@@ -107,4 +107,31 @@ describe('auth route', () => {
       });
   });
 
+  it('has a /verify route', () => {
+    return User.create({
+      email: 'b@b.com',
+      password: 'booboo'
+    })
+      .then(user => {
+        return request(app)
+          .post('/auth/signin')
+          .send({
+            email: user.email,
+            password: 'booboo'
+          })
+          .then(res => res.body.token);
+      })
+      .then(token => {
+        return request(app)
+          .get('/auth/verify')
+          .set('Authorization', `Bearer ${token}`);
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          email: 'b@b.com'
+        });
+      });
+  });
+
 });
