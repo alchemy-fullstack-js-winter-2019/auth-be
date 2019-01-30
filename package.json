@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/avanvalk/auth-be#readme",
   "devDependencies": {
+    "dotenv": "^6.2.0",
     "eslint": "^5.12.1",
     "jest": "^23.6.0",
     "mongoose": "^5.4.6",
