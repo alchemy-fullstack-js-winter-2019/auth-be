@@ -75,7 +75,6 @@ describe('User model', () => {
       .then(user => tokenize(user))
       .then(token => {
         return User.findByToken(token);
-        console.log('***HEEEEEEERE***', token);
       })
       .then(userFromToken => {
         expect(userFromToken).toEqual({
