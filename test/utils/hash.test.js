@@ -30,9 +30,9 @@ describe('hassing functions', () => {
   it('creates the same hash given the same salt', () => {
     const password = 'passowrd';
     const versionInfo = '$2b$10$'; //version and rounds
-    const salt = 'ASDFGTRHYJUIKOLPERTYUI';
+    const salt = 'ABCDEFGHIJKLMNOPQRSTUV';
     const bcryptSalt = `${versionInfo}${salt}`; 
-    return bcrypt.hash('password', bcryptSalt) 
+    return bcrypt.hash(password, bcryptSalt) 
       .then(hashedPassword => {
         return Promise.all([ //pass this hasedPassword2 + has2
           Promise.resolve(hashedPassword), //creates the fake promise that resolved with the hashedpassword
@@ -40,7 +40,7 @@ describe('hassing functions', () => {
         ]);
       })
       .then(([hash1, hash2]) => {
-        expect(hash1).toEqual(hash1); //same has because of the same salg
+        expect(hash1).toEqual(hash2); //same has because of the same salg
       });
   });
   it('can compare hashes basedon on the same password', () => {

@@ -3,7 +3,7 @@ require('../../lib/utils/connect')();
 const mongoose = require('mongoose');
 const { Types } = require('mongoose');
 const User = require('../../lib/models/User'); //importing our user
-const { tokenize, untokenize } = require('../../lib/utils/token');
+const { tokenize } = require('../../lib/utils/token');
 
 
 
