@@ -19,7 +19,6 @@ describe('jwt', () => {
       }
     }, 'backStreetBoys');
     const body = jwt.verify(token, 'backStreetBoys');
-    // console.log(body); // returns { payload: { foo: 'bar' }, iat: 1548359241 }
     expect(body).toEqual({
       payload: {
         foo: 'bar' 

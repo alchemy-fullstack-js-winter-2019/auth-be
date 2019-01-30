@@ -5,6 +5,13 @@ const { Types } = require('mongoose');
 const User = require('../../lib/models/User');
 const { tokenize, untokenize } = require('../../lib/utils/token');
 
+const createUser = (email, password) => {
+  return User.create({
+    email,
+    password
+  });
+};
+
 describe('User', () => {
   beforeEach(done => {
     return mongoose.connection.dropDatabase(() => {
@@ -41,38 +48,21 @@ describe('User', () => {
 
   it('stores a _tempPassword', () => {
     const user = new User({ email: 'e@e.com', password: 'abc123' });
-    // console.log(user); // returns { _id: 5c4a3ea7056e1e0afd9baf1b, email: 'e@e.com' }
     expect(user._tempPassword).toEqual('abc123');
   });
 
   it('has a passwordHash', () => {
-    const user = new User({
-      email: 'b@b.com',
-      password: 'booboo'
-    });
-    user.save()
+    return createUser('s47@sbc.net', 'cari123')
       .then(user => {
         expect(user.passwordHash).toEqual(expect.any(String));
         expect(user.passwordHash).toBeDefined();
       });
-    // v static method, similar as above (instance method)
-    // return User.create({
-    //   email: 'b@b.com',
-    //   password: 'booboo'
-    // })
-    //   .then(user => {
-    //     expect(user.passwordHash).toEqual(expect.any(String));
-    //     expect(user.passwordHash).toBeDefined();
-    //   });
   });
 
   it('can compare passwords', () => {
-    return User.create({
-      email: 't@t.com',
-      password: 'booboo'
-    })
+    return createUser('spam420@yo.yo', 'hackME')
       .then(user => {
-        return user.compare('booboo');
+        return user.compare('hackME');
       })
       .then(res => {
         expect(res).toBeTruthy();
@@ -80,10 +70,7 @@ describe('User', () => {
   });
 
   it('can compare bad passwords', () => {
-    return User.create({
-      email: 't@t.com',
-      password: 'booboo'
-    })
+    return createUser('m-3@corp.com', 'boobooboo')
       .then(user => {
         return user.compare('coo');
       })
@@ -93,46 +80,35 @@ describe('User', () => {
   });
 
   it('can find a user by token', () => {
-    return User.create({
-      email: 'test@test.com',
-      password: 'password'
-    })
+    return createUser('t9@t9.com', 'alpha')
       .then(user => tokenize(user))
       .then(token => User.findByToken(token))
       .then(foundUser => {
         expect(foundUser).toEqual({
-          // __v: 0,
           _id: expect.any(String),
-          email: 'test@test.com',
-          // passwordHash: expect.any(String)
+          email: 't9@t9.com'
         });
       });
   });
 
   it('can remove __v and passwordHash from user', () => {
-    return User.create({
-      email: 'test@test.com',
-      password: 'password'
-    })
+    return createUser('security@easy2hack.com', 'beta')
       .then(user => user.toJSON())
       .then(userToJson => {
         expect(userToJson).toEqual({
           _id: expect.any(Types.ObjectId),
-          email: 'test@test.com'
+          email: 'security@easy2hack.com'
         });
       });
   });
 
   it('can create an authToken', () => {
-    return User.create({
-      email: 'test@test.com',
-      password: 'password'
-    })
+    return createUser('breeze@wind-4.air', 'gamma')
       .then(user => user.authToken())
       .then(untokenize)
       .then(user => {
         expect(user).toEqual({
-          email: 'test@test.com',
+          email: 'breeze@wind-4.air',
           _id: expect.any(String)
         });
       });

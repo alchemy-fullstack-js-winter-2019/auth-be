@@ -5,15 +5,11 @@ const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../../lib/app');
 
-const createUser = (
-  email = 'default@email.com',
-  password = 'defaultPassword'
-) => {
+const createUser = (email, password) => {
   return User.create({
     email,
     password
-  })
-    .then(res => res.body);
+  });
 };
 
 describe('auth route', () => {
@@ -31,7 +27,7 @@ describe('auth route', () => {
     const user = {
       email: 'test@test.com',
       password: 'password'
-    };
+    };  
     return request(app)
       .post('/auth/signup')
       .send(user)
@@ -47,10 +43,7 @@ describe('auth route', () => {
   });
 
   it('can sign in a user', () => {
-    return User.create({
-      email: 'cari.pizza@pizza.io',
-      password: 'tomatoSlice'
-    })
+    return createUser('cari.pizza@pizza.io', 'tomatoSlice')
       .then(createdUser => {
         return request(app)
           .post('/auth/signin')

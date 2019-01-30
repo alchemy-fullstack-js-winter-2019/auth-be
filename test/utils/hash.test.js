@@ -5,7 +5,6 @@ describe('auth-be app', () => {
   it('hashes a password', () => {
     return bcryptjs.hash('password', 10)
       .then(hashedPassword => {
-      // console.log(hashedPassword);
         expect(hashedPassword).toBeDefined();
       });
   });
@@ -20,7 +19,6 @@ describe('auth-be app', () => {
         ]);
       })
       .then(([hash1, hash2]) => {
-      // console.log(hash1, hash2)
         expect(hash1).not.toEqual(hash2);
       });
   });
@@ -35,7 +33,6 @@ describe('auth-be app', () => {
         ]);
       })
       .then(([hash1, hash2]) => {
-      // console.log('creates the same hash given the same salt:', hash1, hash2)
         expect(hash1).toEqual(hash2);
       });
   });
@@ -46,7 +43,6 @@ describe('auth-be app', () => {
       .then(hash => {
         bcryptjs.compare(password, hash)
           .then(res => {
-            // console.log(res); // returns 'true'
             expect(res).toBeTruthy();
           });
       });
@@ -57,7 +53,6 @@ describe('auth-be app', () => {
       .then(hash => {
         bcryptjs.compare('booboo', hash)
           .then(res => {
-            // console.log(res); // returns 'false'
             expect(res).toBeFalsy();
           });
       });
