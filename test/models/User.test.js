@@ -67,15 +67,15 @@ describe('User model', () => {
       });
   });
 
-  it.only('can find a user by token', () => {
+  it('can find a user by token', () => {
     return User.create({
       email: 'test@test.com',
       password: 'PassWord'
     })
       .then(user => tokenize(user))
       .then(token => {
-        User.findByToken(token);
-        console.log(token);
+        return User.findByToken(token);
+        console.log('***HEEEEEEERE***', token);
       })
       .then(userFromToken => {
         expect(userFromToken).toEqual({
