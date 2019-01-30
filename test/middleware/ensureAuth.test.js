@@ -27,7 +27,7 @@ describe('ensureAuth', () => {
     ensureAuth(req, {}, next)
       .then(() => {
         expect(req.user).toEqual({ email: 'test@test.com' });
-        expect(next).toHaveBeenCalled();
+        expect(next).toHaveBeenCalled(1);
       });
   });
 });

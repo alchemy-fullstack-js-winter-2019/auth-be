@@ -96,9 +96,9 @@ describe('app', () => {
   });
 
   it('has a /verify route', () => {
-    User.create({ email: 'test@test.com', password: 'password' })
-      .then(user => {
-        // login user and get token
+    return User.create({ email: 'test@test.com', password: 'password' })
+      .then(() => {
+        // login user and get token with the /auth/signin
         return request(app)
           .post('/auth/signin')
           .send({ email: 'test@test.com', password: 'password' })

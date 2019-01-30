@@ -11,9 +11,9 @@ describe('User model', () => {
     mongoose.connection.dropDatabase(done);
   });
 
-  it.only('validates a good model', () => {
-    const user = new user({ email: 'test@test.com' });
-    expect(user.JSON()).toEqual({ email: 'test@test.com', _id: expect.any(Types.ObjectId) });
+  it('validates a good model', () => {
+    const user = new User({ email: 'test@test.com' });
+    expect(user.toJSON()).toEqual({ email: 'test@test.com', _id: expect.any(Types.ObjectId) });
   });
 
   it('has a required email', () => {
@@ -22,7 +22,7 @@ describe('User model', () => {
     expect(errors.email.message).toEqual('Email required');
   });
 
-  it('stores an _tempPassword', () => {
+  it('stores a _tempPassword', () => {
     const user = new User({
       email: 'test@test.com',
       password: 'PassWord'
@@ -47,7 +47,7 @@ describe('User model', () => {
       password: 'PassWord'
     })
       .then(user => {
-        user.compare('PassWord');
+        return user.compare('PassWord');
       })
       .then(result => {
         expect(result).toBeTruthy();
@@ -67,13 +67,16 @@ describe('User model', () => {
       });
   });
 
-  it('can find a user by token', () => {
+  it.only('can find a user by token', () => {
     return User.create({
       email: 'test@test.com',
       password: 'PassWord'
     })
       .then(user => tokenize(user))
-      .then(token => User.findByToken(token))
+      .then(token => {
+        User.findByToken(token);
+        console.log(token);
+      })
       .then(userFromToken => {
         expect(userFromToken).toEqual({
           email: 'test@test.com',

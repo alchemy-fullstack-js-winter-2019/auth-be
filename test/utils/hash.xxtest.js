@@ -23,7 +23,7 @@ describe('hashing functions', () => {
       });
   });
 
-  it('creates the same has given the same salt', () => {
+  it('creates the same hash given the same salt', () => {
     const password = 'password';
     const versionInfo = '$2b$10$';
     const salt = 'ABCDEFGHIJKLMNOPQRSTUV';
@@ -53,9 +53,7 @@ describe('hashing functions', () => {
   });
 
   it('can compare hashes based on the different passwords', () => {
-    const password = 'password';
-
-    return bcrypt.hash(password, 10)
+    return bcrypt.hash('password', 10)
       .then(hashedPassword => {
         return bcrypt.compare('badPassword', hashedPassword);
       })
@@ -72,7 +70,7 @@ describe('hashing functions', () => {
       });
   });
 
-  it('can compare a GOOD password and string', () => {
+  it('can compare a password and string', () => {
     return hash('password')
       .then(hashedPassword => {
         return compare('password', hashedPassword);
@@ -82,7 +80,7 @@ describe('hashing functions', () => {
       });
   });
 
-  it.only('can compare a BAD password and a string', () => {
+  it('can compare a BAD password and a string', () => {
     return hash('password')
       .then(hashedPassword => {
         return compare('badPassword', hashedPassword);
