@@ -20,7 +20,7 @@ describe('app', () => {
     mongoose.connection.close(done);
   });
 
-  it('can /signup a user', () => {
+  it.only('can /signup a user', () => {
     return request(app)
       .post('/auth/signup')
       .send({ email: 'test@test.com', password: 'password' })
