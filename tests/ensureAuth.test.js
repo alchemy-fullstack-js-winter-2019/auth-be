@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 const { bearerToken, ensureAuth } = require('../middleware/ensureAuth');
-const { tokenize } = require('../middleware/ensureAuth');
+// const { tokenize } = require('../middleware/ensureAuth');
+const { tokenize } = require('../lib/utils/token');
 
 describe('ensureAuth', () => {
   it('can get a bearer token', () => {
@@ -30,8 +31,6 @@ describe('ensureAuth', () => {
       .then(() => {
         expect(req.user).toEqual({ email: 'test@test.com' });
       });
-    
-  
   });
 
 });
