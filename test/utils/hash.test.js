@@ -3,63 +3,49 @@ const { hash, compare } = require('../../lib/utils/hash');
 
 describe('hassing functions', () => {
   it('hashes a password', () => {
-    return bcrypt.hash('password', 10) //run the packet imported and added salt runs function 10 times to generate random number
-      .then(hashedPassword => { //we are expecting a response of hashedPassword
-        expect(hashedPassword).toBeDefined(); //.toBeEqual('')empty string to be able to read the password
+    return bcrypt.hash('password', 10)  
+      .then(hashedPassword => { 
+        expect(hashedPassword).toBeDefined(); 
       });
   });
-
   it('creates hashed passwords that are different', () => {
     return bcrypt.hash('password', 10) 
-      .then(hashedPassword1 => { //can use a promise.all to make this nicer
+      .then(hashedPassword1 => { 
         return bcrypt.hash('password', 10)
           .then(hashedPassword2 => {
             expect(hashedPassword1).not.toEqual(hashedPassword2);
           });
       });
   });
-  // it('creates the same hash given the same salt', () => {
-  //   return bcrypt.hash('password', '$2b$04$1236567850098765432123')
-  //   .then(hashedPasswordOne => {
-  //     return bcrypt.hash('password', salt)
-  //       .then(hashedPasswordTwo => {
-  //         expect(hashedPasswordOne).toEqual(hashedPasswordTwo);
-  //       });
-  //   });
-  // });
   it('creates the same hash given the same salt', () => {
     const password = 'passowrd';
-    const versionInfo = '$2b$10$'; //version and rounds
+    const versionInfo = '$2b$10$'; 
     const salt = 'ABCDEFGHIJKLMNOPQRSTUV';
     const bcryptSalt = `${versionInfo}${salt}`; 
     return bcrypt.hash(password, bcryptSalt) 
       .then(hashedPassword => {
-        return Promise.all([ //pass this hasedPassword2 + has2
+        return Promise.all([ 
           Promise.resolve(hashedPassword), //creates the fake promise that resolved with the hashedpassword
           bcrypt.hash(password, bcryptSalt) 
         ]);
       })
       .then(([hash1, hash2]) => {
-        expect(hash1).toEqual(hash2); //same has because of the same salg
+        expect(hash1).toEqual(hash2); 
       });
   });
   it('can compare hashes basedon on the same password', () => {
     const password = 'password'; 
-
-    return bcrypt.hash('password', 10) //return has from 
+    return bcrypt.hash('password', 10) 
       .then(hashedPassword => {
         return bcrypt.compare(password, hashedPassword); 
       })
-      .then(result => { //pass result 
+      .then(result => { 
         expect(result).toBeTruthy();
       });
-    //   .then(result => {
-    //     expect(result).toBeTruthy()
-    //   })
   });
 
   it('can compare hashes based on different password', () => {
-    return bcrypt.hash('password', 10) //returning the has password
+    return bcrypt.hash('password', 10) //returning the hash password
       .then(hashedPassword => {
         return bcrypt.compare('badPassword', hashedPassword); 
       })
@@ -69,7 +55,7 @@ describe('hassing functions', () => {
   });
 
   it('can hash a password', () => {
-    return hash('password') //passes it rhough function hash
+    return hash('password')
       .then(hashedPassword => {
         expect(hashedPassword).toBeDefined();
         expect(hashedPassword).not.toEqual('password');
@@ -77,8 +63,8 @@ describe('hassing functions', () => {
   });
 
   it('compares password', () => {
-    return hash('password') //returning hash password hashed password here 
-      .then(hashedPassword => { //giving it some variable
+    return hash('password') 
+      .then(hashedPassword => { 
         return compare ('password', hashedPassword); 
       })
       .then(result => { 
@@ -91,8 +77,8 @@ describe('hassing functions', () => {
       .then(hashedPassword => { //take hashpassword
         return compare('badpassword', hashedPassword);
       })
-      .then(result => { //then then result should befalse
-        expect(result).toBeFalsy(); //expecting the result 
+      .then(result => { 
+        expect(result).toBeFalsy(); 
       });
   });
 });

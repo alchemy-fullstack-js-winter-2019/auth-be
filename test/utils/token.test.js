@@ -27,7 +27,7 @@ describe('web token', () => {
 
   it('can untokenize a payload', () => {
     const token = tokenize({ hi: 'there' }); //create a new token 
-    const payload = untokenize(token); //will equal to 
+    const payload = untokenize(token); 
     expect(payload).toEqual({ hi: 'there' });
   });
 });
