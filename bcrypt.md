@@ -46,7 +46,7 @@ check if a hash matches a string though.
 
 * create a test `it('can compare hashes based on the same password')`
   * create a hash
-  * `then` use `bcryptjs.compare` to compare the unhased string to the hash
+  * `then` use `bcryptjs.compare` to compare the unhashed string to the hash
   * `then` `expect(result).toBeTruthy()`
 
 ## extract hash into a function
