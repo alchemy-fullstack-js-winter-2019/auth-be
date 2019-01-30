@@ -116,4 +116,9 @@ describe('User tests', () => {
       });
   });
 
+  afterAll(done => {
+    mongoose.connection.close();
+    done();
+  });
+
 });
