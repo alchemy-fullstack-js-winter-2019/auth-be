@@ -7,7 +7,6 @@ const request = require('supertest');
 const connect = require('../lib/utils/connect');
 
 
-
 describe('userAuth', ()=> {
   const createUser = (email = 'johnny', password = 'password') => {
     return User.create({
@@ -82,7 +81,7 @@ describe('userAuth', ()=> {
         expect(res.status).toEqual(401);
       });
   });
-  it.only('denies access with bad pw', ()=> {
+  it('denies access with bad email', ()=> {
     return User.create({
       email: 'johnny@email.com',
       password: 'password'
@@ -97,6 +96,30 @@ describe('userAuth', ()=> {
       })
       .then(res => {
         expect(res.status).toEqual(401);
+      });
+  });
+
+  it.only('has a /verify route', () => {
+    return User.create({
+      email: 'mine@email.com',
+      password: 'password'
+    })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({ email: 'mine@email.com', password: 'password' })
+          .then(res =>  res.body.token);
+      })
+      .then(token => {
+        return request(app)
+          .get('/auth/verify')
+          .set('Authorization', `Bearer ${token}`);
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          email: 'mine@email.com',
+          _id: expect.any(String)
+        });
       });
   });
 });
