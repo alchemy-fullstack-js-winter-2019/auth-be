@@ -1,0 +1,44 @@
+{
+  "name": "auth-be",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^6.2.0",
+    "eslint": "^5.12.1",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
+    "mongoose": "^5.4.6",
+    "morgan": "^1.9.1"
+  },
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.9",
+    "supertest": "^3.4.2"
+  },
+  "scripts": {
+    "test": "jest --verbose --runInBand --detectOpenHandles",
+    "test:watch": "jest --watch --verbose --runInBand --detectOpenHandles",
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "start": "nodemon server.js"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caripizza/auth-be.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/caripizza/auth-be/issues"
+  },
+  "homepage": "https://github.com/caripizza/auth-be#readme"
+}
