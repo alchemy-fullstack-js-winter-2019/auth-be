@@ -46,6 +46,3 @@ describe('jwt functions', () => {
   });
 });
 
-UserSchema.statics.findByToken = function(token) {
-  return untokenize(token);
-};

@@ -2,3 +2,18 @@
 *rainbow table is a way for hackers to look at similiarities between other tables that they've hacked so we use a salting technique
 *another hack technique is by looking at everyone with the same Hash: to prevent this we create random hash which makes every hash uniqu. 
 1.hash 2.salt 3. randomize
+
+
+////AUTH.JS
+we use user.compare which is asynchronous and returns true or false, if the password is correct we use the user and token
+.post('/signup', (req, res, next) => {
+  const { email, password } = req.body;
+  User.findOne({ email })
+    .then(user =>{
+      if(user.eamain && user.password){
+      }
+    });
+});
+
+
+.repace(/Bearer\s/i) the \s gets whitespace/i makes it case insensitive. 

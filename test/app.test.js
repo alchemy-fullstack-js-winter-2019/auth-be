@@ -8,11 +8,6 @@ const connect = require('../lib/utils/connect');
 
 
 describe('userAuth', ()=> {
-  const createUser = (email = 'johnny', password = 'password') => {
-    return User.create({
-      email, password
-    });
-  };
   beforeAll(() => {
     connect();
   });
@@ -91,7 +86,7 @@ describe('userAuth', ()=> {
           .post('/auth/signin')
           .send({
             email: 'johnny@.com',
-            password: 'pass'
+            password: 'password'
           });
       })
       .then(res => {
@@ -99,7 +94,7 @@ describe('userAuth', ()=> {
       });
   });
 
-  it.only('has a /verify route', () => {
+  it('has a /verify route', () => {
     return User.create({
       email: 'mine@email.com',
       password: 'password'

@@ -3,7 +3,7 @@ const { hash, compare } = require('../lib/utils/hash');
 
 describe('hashing functions', () => {
 
-  it.only('hashes a pw', ()=> {
+  it('hashes a pw', ()=> {
     //the higher the number the longer it takes to make the salt hwcih would be the first 22 char of the pw after 2a
     return bcrypt.hash('password', 10)
       .then(hashedPassword => {
