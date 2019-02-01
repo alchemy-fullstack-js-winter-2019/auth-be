@@ -47,7 +47,6 @@ describe('User model', () => {
         return user.compare('pass');
       })
       .then(result => {
-        console.log(result);
         expect(result).toBeTruthy;
       });
   });

@@ -49,7 +49,6 @@ describe('userAuth', ()=> {
           });
       })
       .then(res => {
-        console.log('whaaat', res.body);
         expect(res.body).toEqual({
           user:{
             email: 'johnny@email.com',
