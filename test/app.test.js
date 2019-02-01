@@ -1,5 +1,5 @@
 require('dotenv').config();
-require('../lib/utils/connect')();
+// require('../lib/utils/connect')();
 const app = require('../lib/app');
 const mongoose = require('mongoose');
 const User = require('../lib/models/User');
@@ -49,6 +49,7 @@ describe('userAuth', ()=> {
           });
       })
       .then(res => {
+        console.log('whaaat', res.body);
         expect(res.body).toEqual({
           user:{
             email: 'johnny@email.com',
