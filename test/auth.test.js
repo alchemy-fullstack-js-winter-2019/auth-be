@@ -67,7 +67,7 @@ describe('auth', () => {
           .get('/auth/verify')
           .set('Authorization', `Bearer ${token}`);
       })
-      .then(res => {
+      .then(res => { //we expect to recieve back
         expect(res.body).toEqual({
           email: 'bob@yahoo.com',
           _id: expect.any(String)

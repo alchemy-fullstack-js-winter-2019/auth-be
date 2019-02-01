@@ -9,6 +9,11 @@ describe('models', () => {
   beforeEach((done) => { 
     mongoose.connection.dropDatabase(done);
   });
+  
+  afterAll(done => {
+    mongoose.connection.close(done);
+  });
+
   it('validates a good model', () => {
     const user = new User({ email: 'test@test.com' }); //creates a new user and pass it an email address
     expect(user.toJSON()).toEqual({ email: 'test@test.com', _id: expect.any(Types.ObjectId) }); //expect user to have email address and id
