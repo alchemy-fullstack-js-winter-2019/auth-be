@@ -1,38 +1,43 @@
 require('dotenv').config();
 require('../../lib/utils/connect')();
+
 const mongoose = require('mongoose');
 const { Types } = require('mongoose');
 const User = require('../../lib/models/User');
-const { tokenize, untokenize } = require('../../lib/utils/token');
+const { tokenize } = require('../../lib/utils/token');
 
-describe('User model', () => {
+
+describe('User tests', () => {
+
   beforeEach(done => {
     mongoose.connection.dropDatabase(done);
   });
 
   it('validates a good model', () => {
     const user = new User({ email: 'test@test.com' });
-    expect(user.toJSON()).toEqual({ email: 'test@test.com', _id: expect.any(Types.ObjectId) });
+    expect(user.toJSON()).toEqual({ 
+      email: 'test@test.com',
+      _id: expect.any(Types.ObjectId)
+    });
   });
 
   it('has a required email', () => {
-    const user = new User({});
+    const user = new User({ });
     const errors = user.validateSync().errors;
     expect(errors.email.message).toEqual('Email required');
   });
 
   it('stores a _tempPassword', () => {
-    const user = new User({
-      email: 'test@test.com',
-      password: 'p455w0rd'
-    });
-    expect(user._tempPassword).toEqual('p455w0rd');
+    const email = 'test@test.com';
+    const password = 'password';
+    const user = new User({ email, password });
+    expect(user._tempPassword).toEqual('password');
   });
 
-  it('has a passwordHash', () => {
-    return User.create({
-      email: 'test@test.com',
-      password: 'p455w0rd'
+  it('passwordHash is set', () => {
+    return User.create({ 
+      email: 'test@test.com', 
+      password: 'passwordTest' 
     })
       .then(user => {
         expect(user.passwordHash).toEqual(expect.any(String));
@@ -40,60 +45,80 @@ describe('User model', () => {
       });
   });
 
-  it('can compare good passwords', () => {
-    return User.create({
-      email: 'test@test.com',
-      password: 'p455w0rd'
-    })
+  it('compares passwords', () => { 
+    const password = 'password';
+    return User.create({ email: 'test@test.com', password })
       .then(user => {
-        return user.compare('p455w0rd');
+        return user.compare(password);
       })
-      .then(result => {
-        expect(result).toBeTruthy();
+      .then(res => {
+        expect(res).toBeTruthy();
       });
   });
 
   it('can compare bad passwords', () => {
-    return User.create({
-      email: 'test@test.com',
-      password: 'p455w0rd'
-    })
+    const password = 'password';
+    return User.create({ email: 'test@test.com', password })
       .then(user => {
-        return user.compare('badPassword');
+        return user.compare('badpassword');
       })
-      .then(result => {
-        expect(result).toBeFalsy();
+      .then(res => {
+        expect(res).toBeFalsy();
       });
   });
 
-  it('can find a user by token', () => {
-    return User.create({
-      email: 'test@test.com',
-      password: 'p455w0rd'
+  it('can untokenize a user', () => {
+    // Create a new user if one doesn't exist
+    return User.create({ 
+      email: 'test@test.com', 
+      password: 'passwordTest' 
     })
-      .then(user => tokenize(user))
-      .then(token => User.findByToken(token))
+    // Make the user into a token
+      .then(user => {
+        return tokenize(user);
+      })
+      // Find the token and untokenize it to find user
+      .then(userToken => {
+        return User.findByToken(userToken);
+      })
+      // Expect the user object back including the id and version
       .then(userFromToken => {
-        // -> then expect to get a user
         expect(userFromToken).toEqual({
           email: 'test@test.com',
-          _id: expect.any(String)
+          _id: expect.any(String),
         });
       });
   });
 
-  it('can create an auth token', () => {
+  it('does not return __v or passwordHash with user', () => {
     return User.create({
-      email: 'test@test.com',
-      password: 'password'
+      email: 'test@test.com', 
+      password: 'passwordTest'
     })
-      .then(user => user.authToken())
-      .then(untokenize)
       .then(user => {
-        expect(user).toEqual({
-          email: 'test@test.com',
-          _id: expect.any(String)
-        });
+        return tokenize(user);
+      })
+      .then(userToken => User.findByToken(userToken))
+      .then(userFromToken => {
+        expect(userFromToken.passwordHash).toBeUndefined();
+        expect(userFromToken.__v).toBeUndefined();
       });
   });
+
+  it('returns auth token for user', () => {
+    return User.create({
+      email: 'test@test.com', 
+      password: 'passwordTest'
+    })
+      .then(user => user.authToken())
+      .then(returnedToken => {
+        expect(returnedToken).toEqual(expect.any(String));
+      });
+  });
+
+  afterAll(done => {
+    mongoose.connection.close();
+    done();
+  });
+
 });

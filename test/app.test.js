@@ -30,7 +30,7 @@ describe('app', () => {
           },
           token: expect.any(String)
         });
-      });
+      }); 
   });
 
   it('can sign in user', () => {
