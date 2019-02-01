@@ -3,4 +3,4 @@
   services:
     - mongodb
   env:
-    - MONGODB_URI=... AUTH_SECRET=...
+    - MONGODB_URI=mongodb://127.0.0.1:27017/auth AUTH_SECRET=s3cret
