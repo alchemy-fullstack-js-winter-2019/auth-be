@@ -16,6 +16,10 @@ describe('User model', () => {
     mongoose.connection.dropDatabase(done);
   });
 
+  afterAll(done => {
+    mongoose.connection.close(done);
+  });
+
   it('validates a good model', () => {
     const user = new User({ email: 'test@test.com' });
     expect(user.toJSON()).toEqual({ email: 'test@test.com', _id: expect.any(Types.ObjectId) });
