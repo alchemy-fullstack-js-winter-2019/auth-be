@@ -17,7 +17,10 @@ describe('auth app', () => {
     afterAll(done => {
         mongoose.connection.close(done);
     });
-
+    afterAll(() => {
+        return mongoose.disconnect();
+    });
+    
     it('can sign up a new user', () => {
         return request(app)
             .post('/auth/signup')
