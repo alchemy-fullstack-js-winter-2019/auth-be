@@ -83,37 +83,36 @@ describe('Users ', () => {
         expect(result).toBeFalsy();
       });
   });
-  // it('can find a user by token', () => {
-  //   return User.create({
-  //     email: 'test@test.com',
-  //     password: 'p455w0rd'
-  //   })
-  //     .then(user => tokenize(user))
-  //     .then(token => User.findByToken(token))
-  //     .then(userFromToken => {
-  //       // -> then expect to get a user
-  //       expect(userFromToken).toEqual({
-  //         email: 'test@test.com',
-  //         passwordHash: expect.any(String),
-  //         _id: expect.any(String),
-  //         __v: 0
-  //       });
-  //     });
-  // });
-  // it('can create an auth token', () => {
-  //   return User.create({
-  //     email: 'test@test.com',
-  //     password: 'password'
-  //   })
-  //     .then(user => user.authToken())
-  //     .then(untokenize)
-  //     .then(user => {
-  //       expect(user).toEqual({
-  //         email: 'test@test.com',
-  //         _id: expect.any(String)
-  //       });
-  //     });
-  // });
+  it('can find a user by token', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'p455w0rd'
+    })
+      .then(user => tokenize(user))
+      .then(token => User.findByToken(token))
+      .then(userFromToken => {
+        console.log('banana',  userFromToken._id);
+        // -> then expect to get a user
+        expect(userFromToken).toEqual({
+          email: 'test@test.com',
+          _id: expect.any(String)
+        });
+      });
+  });
+  it('can create an auth token', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(user => user.authToken())
+      .then(untokenize)
+      .then(user => {
+        expect(user).toEqual({
+          email: 'test@test.com',
+          _id: expect.any(String)
+        });
+      });
+  });
   afterAll((done) => {
     mongoose.disconnect(done);
   });
