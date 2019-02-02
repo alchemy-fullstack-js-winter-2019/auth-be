@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 
 const app = require('../lib/app');
 
-describe('user tests', () => {
+describe.skip('user tests', () => {
   beforeAll(() => {
     connect();
   });
