@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": { 
+    "pretest": "npm run lint",
     "test": "jest --runInBand ",
     "test:watch": "jest --watch --runInBand",
-    "start": "server.js",
+    "start": "node server.js",
     "lint": "eslint .",
-    "jest": "jest --verbose --runInBand"
+    "jest": "jest --verbose --runInBand --detectOpenHandles"
   },
   "jest": {
     "testEnvironment": "node"
@@ -30,7 +31,6 @@
     "supertest": "^3.4.2"
   },
   "dependencies": {
-    "bcrypt": "^3.0.3",
     "bcryptjs": "^2.4.3",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
