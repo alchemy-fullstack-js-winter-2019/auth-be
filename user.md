@@ -15,7 +15,7 @@
   * expect to get some errors
     * HINT: `console.log` errors and see what it looks like
 
-## get a clear password on creating a new user
+## get a clear password on creating a new user aka uncrypted password
 
 When we create a new user, we initially have to send in a clear, unencrypted, password.
 We never want to store this unencrypted password in our database, but we want to be able

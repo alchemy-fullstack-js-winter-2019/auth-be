@@ -1,0 +1,40 @@
+{
+  "name": "auth-be",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": { 
+    "pretest": "npm run lint",
+    "test": "jest --runInBand ",
+    "test:watch": "jest --watch --runInBand",
+    "start": "node server.js",
+    "lint": "eslint .",
+    "jest": "jest --verbose --runInBand --detectOpenHandles"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cruzayye/auth-be.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cruzayye/auth-be/issues"
+  },
+  "homepage": "https://github.com/cruzayye/auth-be#readme",
+  "devDependencies": {
+    "eslint": "^5.12.1",
+    "jest": "^23.6.0",
+    "supertest": "^3.4.2"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
+    "mongoose": "^5.4.6"
+  }
+}
