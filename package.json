@@ -24,7 +24,7 @@
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
-    "test": "exit 0",
+    "test": "jest",
     "test:watch": "jest --watch",
     "start": "nodemon server.js"
   },
