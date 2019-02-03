@@ -1,0 +1,42 @@
+{
+  "name": "auth-be",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test:watch": "jest --watch --runInBand",
+    "test": "jest",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avanvalk/auth-be.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/avanvalk/auth-be/issues"
+  },
+  "homepage": "https://github.com/avanvalk/auth-be#readme",
+  "devDependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^6.2.0",
+    "eslint": "^5.12.1",
+    "jest": "^23.6.0",
+    "mongoose": "^5.4.6",
+    "nodemon": "^1.18.9",
+    "superagent": "^4.1.0",
+    "supertest": "^3.4.2"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0"
+  }
+}
