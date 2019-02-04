@@ -30,12 +30,12 @@ describe('auth', () => {
   it('can signup a new user', () => {
     return request(app)
       .post('/auth/signup')
-      .send({ email: 'abc@abc.com', password: 'password' })
+      .send({ email: 'teonna@heintz.com', password: 'password' })
       .then(res => {
         expect(res.body).toEqual({
           user: {
             _id: expect.any(String),
-            email: 'abc@abc.com',
+            email: 'teonna@heintz.com',
           },
           token: expect.any(String)
         });
