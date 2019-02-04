@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const app = require('../lib/app');
 const User = require('../lib/models/User');
 
+
 const createUser = email => {
   return request(app)
     .post('/auth/signup')
@@ -43,15 +44,15 @@ describe('auth', () => {
   });
 
   it('can sign in a user', () => {
-    return createUser('test@test.com')
+    return createUser('teonna@heintz.com')
       .then(() => {
         return request(app)
           .post('/auth/signin')
-          .send({ email: 'test@test.com', password: 'password' })
+          .send({ email: 'teonna@heintz.com', password: 'password' })
           .then(res => {
             expect(res.body).toEqual({
               user: {
-                email: 'test@test.com',
+                email: 'teonna@heintz.com',
                 _id: expect.any(String),
               },
               token: expect.any(String)
