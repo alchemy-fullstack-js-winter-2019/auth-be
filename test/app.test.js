@@ -100,13 +100,13 @@ describe('app', () => {
         return request(app)
           .get('/auth/verify')
           .set('Authorization', `Bearer ${token}`);
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          email: 'test@test.com',
+          _id: expect.any(String)
+        });
       });
-    // .then(res => {
-    //   expect(res.body).toEqual({
-    //     email: 'test@test.com',
-    //     _id: expect.any(String)
-    //   });
-    // });
   });
   
   afterAll(done => {
