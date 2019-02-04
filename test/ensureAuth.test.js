@@ -1,5 +1,5 @@
 require('dotenv').config();
-require('../lib/utils/connect')();
+// require('../lib/utils/connect')();
 
 const { bearerToken, ensureAuth } = require('../lib/middleware/ensureAuth');
 const { tokenize } = require('../lib/utils/token');

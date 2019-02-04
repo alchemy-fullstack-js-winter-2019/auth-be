@@ -105,3 +105,6 @@ describe('user model', () => {
 
 });
 
+afterAll(done => {
+  mongoose.connection.close(done);
+});

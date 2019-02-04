@@ -24,10 +24,6 @@ describe('auth', () => {
     });
   });
 
-  afterAll(done => {
-    mongoose.connection.close(done);
-  });
-
   it('can signup a new user', () => {
     return request(app)
       .post('/auth/signup')
@@ -97,3 +93,6 @@ describe('auth', () => {
   });
 });
 
+afterAll(done => {
+  mongoose.connection.close(done);
+});
