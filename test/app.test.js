@@ -83,4 +83,34 @@ describe('app', () => {
       });
   });
 
+  it('has a /verify route', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(() => {
+        return request(app)
+          .post('/auth/signin')
+          .send({ email: 'test@test.com', password: 'password' })
+          .then(res => {
+            return res.body.token;
+          });
+      })
+      .then(token => {
+        return request(app)
+          .get('/auth/verify')
+          .set('Authorization', `Bearer ${token}`);
+      });
+    // .then(res => {
+    //   expect(res.body).toEqual({
+    //     email: 'test@test.com',
+    //     _id: expect.any(String)
+    //   });
+    // });
+  });
+  
+  afterAll(done => {
+    mongoose.connection.close();
+    done();
+  });
 });
