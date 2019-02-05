@@ -9,6 +9,10 @@ describe('User model', () => {
   beforeEach(done => {
     mongoose.connection.dropDatabase(done);
   });
+  
+  afterAll(done => {
+    mongoose.connection.close(done);
+  });
 
   it('validates a good model', () => {
     const user = new User({ email: 'test@test.com' });
