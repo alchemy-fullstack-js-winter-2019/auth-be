@@ -24,6 +24,7 @@
   "homepage": "https://github.com/sophiegraham/auth-be#readme",
   "devDependencies": {
     "eslint": "^5.12.1",
+    "express": "^4.16.4",
     "jest": "^23.6.0"
   },
   "dependencies": {

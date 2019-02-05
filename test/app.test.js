@@ -83,7 +83,7 @@ describe('app', () => {
       });
   });
 
-  it('has a /verify route', () => {
+  it.skip('has a /verify route', () => {
     return User.create({
       email: 'test@test.com',
       password: 'password'
